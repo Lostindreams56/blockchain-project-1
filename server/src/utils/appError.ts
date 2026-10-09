@@ -1,0 +1,19 @@
+/**
+ * Operational application error class.
+ * Distinguishes known operational failures from unexpected programmer bugs.
+ */
+export class AppError extends Error {
+  public readonly statusCode: number;
+  public readonly isOperational: boolean;
+  public readonly details?: unknown;
+
+  constructor(message: string, statusCode: number = 500, details?: unknown) {
+    super(message);
+    this.statusCode = statusCode;
+    this.isOperational = true;
+    this.details = details;
+
+    Object.setPrototypeOf(this, new.target.prototype);
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
