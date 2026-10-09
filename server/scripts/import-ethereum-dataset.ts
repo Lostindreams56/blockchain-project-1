@@ -63,7 +63,14 @@ async function runImporter(): Promise<void> {
     process.exit(1);
   }
 
-  const resolvedPath = path.resolve(filePath);
+  let resolvedPath = path.resolve(filePath);
+  if (!fs.existsSync(resolvedPath)) {
+    const fromRoot = path.resolve(process.cwd(), '..', filePath);
+    if (fs.existsSync(fromRoot)) {
+      resolvedPath = fromRoot;
+    }
+  }
+
   if (!fs.existsSync(resolvedPath)) {
     console.error(`\n[ERROR] Dataset file not found at: ${resolvedPath}`);
     console.error('Please verify the path and ensure the Kaggle file is downloaded.\n');
