@@ -85,14 +85,27 @@ export const ModelStatusWindow: React.FC = () => {
 
       {/* Verified Model Evaluation Benchmarks */}
       <div className="flex-1 win95-field-sunken bg-white p-3 overflow-y-auto space-y-4">
+        <div className="p-2.5 bg-[#FFFFE0] win95-field-sunken border-l-4 border-[#FFAA00] text-[11px] text-[#444]">
+          <div className="font-bold text-black flex items-center gap-1.5 mb-1">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FFAA00] inline-block" />
+            <span>Dataset Pipeline Status: Ethereum training dataset not configured</span>
+          </div>
+          <p className="text-[10px] leading-relaxed">
+            The intended Ethereum fraud-detection dataset (<code>vagifa/ethereum-frauddetection-dataset</code>) has not yet been ingested into MongoDB. Model training and telemetry metrics are in standby until the dataset is imported using the dedicated pipeline command:
+          </p>
+          <div className="mt-1.5 p-1.5 bg-[#FFF] win95-field-sunken text-[10px] win95-mono text-[#000080]">
+            npm run dataset:import -- --file=&lt;path-to-transaction_dataset.csv&gt;
+          </div>
+        </div>
+
         <div className="flex items-center gap-2 pb-2 border-b border-[#808080]">
           <ModelCpuIcon className="w-6 h-6 shrink-0" />
           <div>
             <h3 className="font-bold text-[12px] text-black">
-              Verified Stage 3 Model Specifications ({METRICS.algorithm})
+              Target Architecture Specifications ({METRICS.algorithm})
             </h3>
             <p className="text-[10px] text-[#555]">
-              Artifact: <code>ethereum_fraud_model_v1.joblib</code> • Trained &amp; evaluated on Kaggle dataset
+              Target Pipeline: <code>SimpleImputer -&gt; VarianceThreshold -&gt; RobustScaler -&gt; XGBoost + TreeSHAP</code>
             </p>
           </div>
         </div>
@@ -101,34 +114,34 @@ export const ModelStatusWindow: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-[11px]">
           <div className="win95-window-frame p-2 bg-[#F5F5F5]">
             <div className="text-[10px] text-[#555] font-semibold">ROC-AUC</div>
-            <div className="text-[14px] font-bold text-[#000080] win95-mono mt-0.5">
-              {(METRICS.testMetrics.rocAuc * 100).toFixed(2)}%
+            <div className="text-[14px] font-bold text-[#808080] win95-mono mt-0.5">
+              --.--%
             </div>
-            <div className="text-[9px] text-[#008000]">Held-out test set</div>
+            <div className="text-[9px] text-[#FFAA00]">Awaiting Ingestion</div>
           </div>
 
           <div className="win95-window-frame p-2 bg-[#F5F5F5]">
             <div className="text-[10px] text-[#555] font-semibold">PR-AUC</div>
-            <div className="text-[14px] font-bold text-[#000080] win95-mono mt-0.5">
-              {(METRICS.testMetrics.prAuc * 100).toFixed(2)}%
+            <div className="text-[14px] font-bold text-[#808080] win95-mono mt-0.5">
+              --.--%
             </div>
-            <div className="text-[9px] text-[#008000]">Precision-Recall</div>
+            <div className="text-[9px] text-[#FFAA00]">Awaiting Ingestion</div>
           </div>
 
           <div className="win95-window-frame p-2 bg-[#F5F5F5]">
             <div className="text-[10px] text-[#555] font-semibold">PRECISION</div>
-            <div className="text-[14px] font-bold text-[#000080] win95-mono mt-0.5">
-              {(METRICS.testMetrics.precision * 100).toFixed(2)}%
+            <div className="text-[14px] font-bold text-[#808080] win95-mono mt-0.5">
+              --.--%
             </div>
-            <div className="text-[9px] text-[#008000]">FP = 5 across 1,152</div>
+            <div className="text-[9px] text-[#FFAA00]">Awaiting Ingestion</div>
           </div>
 
           <div className="win95-window-frame p-2 bg-[#F5F5F5]">
             <div className="text-[10px] text-[#555] font-semibold">RECALL</div>
-            <div className="text-[14px] font-bold text-[#000080] win95-mono mt-0.5">
-              {(METRICS.testMetrics.recall * 100).toFixed(2)}%
+            <div className="text-[14px] font-bold text-[#808080] win95-mono mt-0.5">
+              --.--%
             </div>
-            <div className="text-[9px] text-[#008000]">309/327 fraud detected</div>
+            <div className="text-[9px] text-[#FFAA00]">Awaiting Ingestion</div>
           </div>
         </div>
 

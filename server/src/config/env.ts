@@ -17,6 +17,9 @@ const envSchema = z.object({
   MONGODB_URI: z
     .string()
     .default('mongodb://127.0.0.1:27017/ethereum_fraud_dev'),
+  MONGODB_DB_NAME: z.string().min(1).default('ethereum_fraud_dev'),
+  ETHEREUM_DATASET_COLLECTION: z.string().min(1).default('ethereum_dataset'),
+  INVESTIGATIONS_COLLECTION: z.string().min(1).default('investigations'),
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(15 * 60 * 1000),
   RATE_LIMIT_MAX_REQUESTS: z.coerce.number().int().positive().default(100),
 

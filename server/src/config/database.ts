@@ -69,6 +69,7 @@ class DatabaseManager {
 
     try {
       await mongoose.connect(env.MONGODB_URI, {
+        dbName: env.MONGODB_DB_NAME,
         serverSelectionTimeoutMS: 5000,
         socketTimeoutMS: 45000,
         autoIndex: env.NODE_ENV !== 'production',

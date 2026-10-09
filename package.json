@@ -15,7 +15,10 @@
     "typecheck": "npm --prefix server run typecheck && npm --prefix client run typecheck",
     "test": "npm --prefix server run test",
     "test:server": "npm --prefix server run test",
-    "install:all": "npm --prefix server install && npm --prefix client install"
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dataset:import": "npm --prefix server run dataset:import",
+    "db:inspect": "npm --prefix server run db:inspect",
+    "db:clean": "npm --prefix server run db:clean"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

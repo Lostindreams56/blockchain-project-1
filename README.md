@@ -200,7 +200,70 @@ Ensure `CLIENT_URL=http://localhost:5173` matches the exact host and port servin
 
 ---
 
-## 9. Project Roadmap & Implementation Stages
+---
+
+## 9. Data Integrity & Kaggle Dataset Ingestion Pipeline
+
+### 1. Root Cause of Unrelated "Movie" Records
+During deployment and testing on MongoDB Atlas, inspecting the database cluster via `mongosh` or MongoDB Atlas Data Explorer revealed an unrelated database named `sample_mflix` containing 21,349 movie documents and 41,079 comments.
+
+**Investigation Finding**:
+* Neither the Express backend nor the React frontend ever contained code to download, seed, or ingest movie data.
+* `sample_mflix` is MongoDB Atlas's built-in sample dataset, loaded onto the cluster when the one-click **"Load Sample Dataset"** feature is selected in the MongoDB Atlas Web Console.
+* Connecting via `mongosh "mongodb+srv://..."` without specifying a database name in the path (`/ethereum_fraud_dev`) lists all databases on the cluster, making `sample_mflix` visible.
+
+### 2. Safeguards Implemented
+* **Strict Database Scoping**: `server/src/config/database.ts` now explicitly passes `dbName: env.MONGODB_DB_NAME` (`ethereum_fraud_dev`). Mongoose is strictly restricted from reading or writing to any other database on the cluster.
+* **Separation of Concerns**: Application data is split into 4 isolated collections:
+  1. `users`: Registered investigator accounts.
+  2. `sessions`: Refresh token rotation & audit trails.
+  3. `ethereum_dataset`: Historical Kaggle labeled training records.
+  4. `investigations`: Real wallet analysis case dossiers.
+* **Zero Startup Seeding**: The server startup sequence (`npm start` / `npm run dev`) never auto-downloads, seeds, or imports datasets.
+* **Validation Tests**: Automated Vitest suite (`server/tests/safety.test.ts`) confirms 0 records are inserted during app initialization.
+
+### 3. Inspecting MongoDB Collections
+To view the exact inventory of databases and collections on your MongoDB cluster:
+```bash
+npm run db:inspect
+```
+
+### 4. Safely Cleaning Up the Unrelated Sample Database
+To safely drop the unrelated MongoDB Atlas `sample_mflix` database without risking any application data:
+```bash
+# 1. Preview the action in dry-run mode (safe, zero writes):
+npm run db:clean -- --target-db=sample_mflix
+
+# 2. Execute deletion with explicit confirmation:
+npm run db:clean -- --target-db=sample_mflix --confirm
+```
+*Note: The script contains hard-coded safety guards preventing deletion of `ethereum_fraud_dev`, `admin`, `local`, or `config`.*
+
+### 5. Obtaining and Importing the Real Kaggle Dataset
+The intended candidate dataset is:
+* **Dataset**: [Ethereum Fraud Detection Dataset by Vagifa](https://www.kaggle.com/datasets/vagifa/ethereum-frauddetection-dataset)
+* **File**: `transaction_dataset.csv`
+
+**Import Procedure**:
+1. Download `transaction_dataset.csv` from Kaggle.
+2. (Optional) Run schema validation dry-run:
+   ```bash
+   npm run dataset:import -- --file=/path/to/transaction_dataset.csv --dry-run
+   ```
+3. Execute validated ingestion into MongoDB:
+   ```bash
+   npm run dataset:import -- --file=/path/to/transaction_dataset.csv
+   ```
+The importer validates the `FLAG` target column, verifies binary class distribution (0 = benign, 1 = fraud), and imports records into the isolated `ethereum_dataset` collection.
+
+### 6. Functionality Status While Dataset is Awaiting Ingestion
+* **Authentication & User Management**: Fully operational (`/login`, `/register`, sessions).
+* **Workstation UI**: Fully operational (Windows 95 desktop, dialogs, audio, themes).
+* **Live Model Scoring & Training**: In standby. The Fraud Scanner and Model Status windows will display "Ethereum training dataset not configured" until the real Kaggle dataset is imported.
+
+---
+
+## 10. Project Roadmap & Implementation Stages
 
 - [x] **Stage 1: Project Foundation & Baseline Monorepo Scaffold**
   - Modular Express + TypeScript backend with Zod, Helmet, rate limiting, and Pino.
@@ -212,19 +275,15 @@ Ensure `CLIENT_URL=http://localhost:5173` matches the exact host and port servin
   - Security suite: CSRF protection, rate limiting on `/login` and `/register`, safe user sanitization.
   - Professional cybersecurity-themed `/login`, `/register`, and protected `/dashboard` frontend.
   - 18 automated backend Vitest integration tests covering full auth lifecycles.
-- [x] **Stage 3: Ethereum Fraud Detection Machine Learning Pipeline**
-  - Real Kaggle dataset acquisition (`vagifa/ethereum-frauddetection-dataset`, 9,841 accounts, 51 features).
-  - Preprocessing engine with entity-aware stratified splitting to guarantee 0 address memorization leakage.
-  - Exploratory data analysis (EDA) with automated distribution, class imbalance, and correlation plots.
-  - Benchmark comparison across baseline Dummy, Logistic Regression, Random Forest, and XGBoost.
-  - Champion model: **XGBoost Classifier** achieving **0.9985 ROC-AUC**, **0.9955 PR-AUC**, **98.41% Precision**, and **94.50% Recall** at calibrated threshold 0.62.
-  - Explainable AI (XAI) using TreeSHAP generating global beeswarm and feature importance rankings.
-  - Artifact serialization (`ethereum_fraud_model_v1.joblib`, `model_metadata.json`).
-  - Real-world blockchain compatibility analysis for RPC & Etherscan ingestion.
-  - 12 automated unit tests (`pytest`) covering data loader, preprocessor, and model pipeline.
+- [x] **Stage 3: Data Integrity, Pipeline Isolation & Windows 95 Retro Workstation**
+  - Isolated Kaggle dataset ingestion pipeline (`npm run dataset:import`).
+  - Targeted safe cleanup utility (`npm run db:clean`).
+  - 5-test data safety & collection isolation test suite.
+  - Windows 95 retro desktop redesign (`FraudOS 95`).
 - [ ] **Stage 4: FastAPI Prediction Service & Inference Integration**
   - High-throughput FastAPI endpoints (`/predict`, `/explain`).
   - Integration with Node.js backend gateway and real-time wallet risk scoring.
 - [ ] **Stage 5: Blockchain Ingestion, Case Management & Interactive Forensics**
   - Real-time address feature extraction via Etherscan / Ethereum RPC.
   - Risk radar charts, transaction counterparty network graphs, and investigator notes.
+

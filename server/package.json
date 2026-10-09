@@ -9,7 +9,10 @@
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "dataset:import": "tsx scripts/import-ethereum-dataset.ts",
+    "db:inspect": "tsx scripts/clean-unrelated-data.ts",
+    "db:clean": "tsx scripts/clean-unrelated-data.ts"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.6",

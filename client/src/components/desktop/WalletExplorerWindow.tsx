@@ -154,10 +154,14 @@ export const WalletExplorerWindow: React.FC = () => {
               Evaluated wallet profiles, extracted feature snapshots, and analyst case notes are
               persisted in the MongoDB <code>investigations</code> collection.
             </p>
-            <div className="win95-sunken p-2 bg-[#F9F9F9] text-[10px] win95-mono text-left max-w-sm w-full">
-              Collection: investigations<br />
-              Indexed Key: targetAddress (0x...)<br />
-              Status: Ready for Stage 5 dossier storage
+            <div className="win95-sunken p-2 bg-[#F9F9F9] text-[10px] win95-mono text-left max-w-sm w-full space-y-1">
+              <div><strong>Database:</strong> ethereum_fraud_dev</div>
+              <div className="border-t border-[#DFDFDF] pt-1">
+                • <code>users</code>: Investigator credentials (Isolated)<br />
+                • <code>sessions</code>: Refresh tokens &amp; audit trails<br />
+                • <code>ethereum_dataset</code>: Kaggle labeled records (Awaiting Import)<br />
+                • <code>investigations</code>: Forensic case dossiers &amp; notes
+              </div>
             </div>
           </div>
         )}

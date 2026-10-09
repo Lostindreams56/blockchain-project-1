@@ -96,53 +96,16 @@ export const FraudScannerWindow: React.FC<FraudScannerWindowProps> = ({
       setIsScanning(false);
       feedback.playSuccess();
 
-      // Check if address matches our verified benchmark evaluation samples
-      if (trimmed.toLowerCase() === SAMPLE_BENCHMARK_0.toLowerCase()) {
-        setScanResult({
-          address: trimmed,
-          isValidFormat: true,
-          score: 0.0073, // 0.73%
-          riskTier: 'LOW RISK',
-          classification: 'LEGITIMATE',
-          topDrivers: [
-            'Time Diff between first and last: 1,024,800 mins (Long history)',
-            'Avg min between sent tnx: 1,420 mins (Normal pacing)',
-            'Ether turnover ratio: Balanced incoming vs outgoing',
-          ],
-          analyzedAt: new Date().toLocaleTimeString(),
-          source: 'Stage 3 Kaggle Test Partition (Row #0)',
-          isBenchmarkSample: true,
-        });
-        setStatusMessage('Scan complete: Verified Benchmark Sample #0 (Legitimate)');
-      } else if (trimmed.toLowerCase() === SAMPLE_BENCHMARK_FRAUD.toLowerCase()) {
-        setScanResult({
-          address: trimmed,
-          isValidFormat: true,
-          score: 0.9998, // 99.98%
-          riskTier: 'CRITICAL RISK',
-          classification: 'ILLICIT / FRAUD',
-          topDrivers: [
-            'Time Diff between first and last: < 45 mins (Burner wallet lifespan)',
-            'Avg min between sent tnx: 0.42 mins (Automated bot draining pattern)',
-            'ERC20 token interaction velocity: Rapid liquidation churn',
-          ],
-          analyzedAt: new Date().toLocaleTimeString(),
-          source: 'Stage 3 Kaggle Test Partition (Row #1152)',
-          isBenchmarkSample: true,
-        });
-        setStatusMessage('Alert: Verified Benchmark Sample #1152 classified as CRITICAL FRAUD');
-      } else {
-        // Arbitrary live address
-        setScanResult({
-          address: trimmed,
-          isValidFormat: true,
-          classification: 'UNINDEXED ADDRESS',
-          analyzedAt: new Date().toLocaleTimeString(),
-          source: 'Address Pre-validation Protocol',
-          isBenchmarkSample: false,
-        });
-        setStatusMessage('Address format valid. On-chain transaction indexer required for live feature scoring.');
-      }
+      // Honest status: Kaggle dataset is not yet ingested
+      setScanResult({
+        address: trimmed,
+        isValidFormat: true,
+        classification: 'UNINDEXED ADDRESS',
+        analyzedAt: new Date().toLocaleTimeString(),
+        source: 'Address Pre-validation Protocol',
+        isBenchmarkSample: false,
+      });
+      setStatusMessage('Address format valid. Ethereum training dataset not configured. Run "npm run dataset:import" to enable live fraud scoring.');
     }, 400);
   };
 
