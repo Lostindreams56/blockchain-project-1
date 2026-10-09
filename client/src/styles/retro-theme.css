@@ -1,0 +1,292 @@
+/* ==============================================================================
+   Windows 95 Retro Desktop Theme & Bevel System
+   Authentic late-1990s desktop operating system styling
+   ============================================================================== */
+
+:root {
+  /* Classic Windows 95 Palette */
+  --win-desktop-teal: #008080;
+  --win-surface: #C0C0C0;
+  --win-surface-light: #DFDFDF;
+  --win-surface-dark: #808080;
+  --win-surface-deep: #404040;
+  --win-surface-black: #000000;
+  --win-highlight: #FFFFFF;
+  
+  --win-title-active-start: #000080;
+  --win-title-active-end: #1084D0;
+  --win-title-inactive: #808080;
+  --win-title-text: #FFFFFF;
+  
+  --win-text: #000000;
+  --win-text-disabled: #808080;
+  --win-input-bg: #FFFFFF;
+  --win-selection-bg: #000080;
+  --win-selection-text: #FFFFFF;
+  
+  --win-alert-red: #AA0000;
+  --win-terminal-green: #008000;
+  
+  /* System Font Stack */
+  --win-font-system: "MS Sans Serif", -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Geneva, sans-serif;
+  --win-font-mono: "Courier New", Consolas, Menlo, Monaco, monospace;
+}
+
+/* Theme variations supported via data-theme attribute */
+[data-theme="navy"] {
+  --win-desktop-teal: #003366;
+  --win-title-active-start: #002244;
+  --win-title-active-end: #0066AA;
+}
+
+[data-theme="matrix"] {
+  --win-desktop-teal: #0A1C0A;
+  --win-surface: #B0C4B0;
+  --win-title-active-start: #004400;
+  --win-title-active-end: #008800;
+}
+
+[data-theme="charcoal"] {
+  --win-desktop-teal: #2D3748;
+  --win-surface: #CBD5E1;
+  --win-title-active-start: #1E293B;
+  --win-title-active-end: #334155;
+}
+
+/* Classic Typography */
+.win95-font {
+  font-family: var(--win-font-system);
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.win95-mono {
+  font-family: var(--win-font-mono);
+}
+
+/* ==============================================================================
+   Bevel Borders
+   ============================================================================== */
+
+/* Outer Window / Container Bevel (Standard Raised 2px) */
+.win95-window-frame {
+  background-color: var(--win-surface);
+  border-top: 2px solid var(--win-highlight);
+  border-left: 2px solid var(--win-highlight);
+  border-right: 2px solid var(--win-surface-deep);
+  border-bottom: 2px solid var(--win-surface-deep);
+  box-shadow: 
+    inset 1px 1px 0px var(--win-surface-light),
+    inset -1px -1px 0px var(--win-surface-dark);
+}
+
+/* Standard Raised Bevel (Buttons, Taskbar, Menus) */
+.win95-raised {
+  background-color: var(--win-surface);
+  border-top: 2px solid var(--win-highlight);
+  border-left: 2px solid var(--win-highlight);
+  border-right: 2px solid var(--win-surface-deep);
+  border-bottom: 2px solid var(--win-surface-deep);
+  box-shadow: 
+    inset 1px 1px 0px var(--win-surface-light),
+    inset -1px -1px 0px var(--win-surface-dark);
+}
+
+/* Light Raised (Subtle panels, table headers) */
+.win95-raised-sm {
+  background-color: var(--win-surface);
+  border-top: 1px solid var(--win-highlight);
+  border-left: 1px solid var(--win-highlight);
+  border-right: 1px solid var(--win-surface-dark);
+  border-bottom: 1px solid var(--win-surface-dark);
+}
+
+/* Sunken / Inset Bevel (Inputs, Status Bars, Inset Panels, Result Boxes) */
+.win95-sunken {
+  background-color: var(--win-surface);
+  border-top: 2px solid var(--win-surface-deep);
+  border-left: 2px solid var(--win-surface-deep);
+  border-right: 2px solid var(--win-highlight);
+  border-bottom: 2px solid var(--win-highlight);
+  box-shadow: 
+    inset 1px 1px 0px var(--win-surface-dark),
+    inset -1px -1px 0px var(--win-surface-light);
+}
+
+/* Sunken Field (White background for text inputs and data tables) */
+.win95-field-sunken {
+  background-color: var(--win-input-bg);
+  color: var(--win-text);
+  border-top: 2px solid var(--win-surface-deep);
+  border-left: 2px solid var(--win-surface-deep);
+  border-right: 2px solid var(--win-highlight);
+  border-bottom: 2px solid var(--win-highlight);
+  box-shadow: 
+    inset 1px 1px 0px var(--win-surface-dark),
+    inset -1px -1px 0px var(--win-surface-light);
+}
+
+/* Pressed / Active Bevel (Physically Depressed Button State) */
+.win95-depressed {
+  background-color: var(--win-surface);
+  border-top: 2px solid var(--win-surface-deep) !important;
+  border-left: 2px solid var(--win-surface-deep) !important;
+  border-right: 2px solid var(--win-highlight) !important;
+  border-bottom: 2px solid var(--win-highlight) !important;
+  box-shadow: 
+    inset 1px 1px 0px var(--win-surface-dark),
+    inset -1px -1px 0px var(--win-surface-light) !important;
+}
+
+/* Interactive Button Styling */
+.win95-btn {
+  background-color: var(--win-surface);
+  color: var(--win-text);
+  border-top: 2px solid var(--win-highlight);
+  border-left: 2px solid var(--win-highlight);
+  border-right: 2px solid var(--win-surface-deep);
+  border-bottom: 2px solid var(--win-surface-deep);
+  box-shadow: 
+    inset 1px 1px 0px var(--win-surface-light),
+    inset -1px -1px 0px var(--win-surface-dark);
+  font-family: var(--win-font-system);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 12px;
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none;
+  outline: none;
+  white-space: nowrap;
+}
+
+.win95-btn:active,
+.win95-btn.pressed {
+  border-top: 2px solid var(--win-surface-deep);
+  border-left: 2px solid var(--win-surface-deep);
+  border-right: 2px solid var(--win-highlight);
+  border-bottom: 2px solid var(--win-highlight);
+  box-shadow: 
+    inset 1px 1px 0px var(--win-surface-dark),
+    inset -1px -1px 0px var(--win-surface-light);
+  padding: 4px 11px 2px 13px; /* Subtle 1px physical shift */
+}
+
+.win95-btn:focus-visible {
+  outline: 1px dotted #000000;
+  outline-offset: -4px;
+}
+
+.win95-btn:disabled {
+  color: var(--win-text-disabled);
+  text-shadow: 1px 1px 0px var(--win-highlight);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Title Bar Styling */
+.win95-titlebar-active {
+  background: linear-gradient(90deg, var(--win-title-active-start) 0%, var(--win-title-active-end) 100%);
+  color: var(--win-title-text);
+}
+
+.win95-titlebar-inactive {
+  background-color: var(--win-title-inactive);
+  color: #D4D0C8;
+}
+
+/* Title Bar Buttons */
+.win95-title-btn {
+  width: 16px;
+  height: 14px;
+  background-color: var(--win-surface);
+  color: var(--win-text);
+  border-top: 1px solid var(--win-highlight);
+  border-left: 1px solid var(--win-highlight);
+  border-right: 1px solid var(--win-surface-deep);
+  border-bottom: 1px solid var(--win-surface-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: bold;
+  padding: 0;
+  line-height: 1;
+}
+
+.win95-title-btn:active {
+  border-top: 1px solid var(--win-surface-deep);
+  border-left: 1px solid var(--win-surface-deep);
+  border-right: 1px solid var(--win-highlight);
+  border-bottom: 1px solid var(--win-highlight);
+  padding-top: 1px;
+  padding-left: 1px;
+}
+
+/* Dotted focus outline */
+.win95-dotted-focus:focus-visible {
+  outline: 1px dotted #000000;
+  outline-offset: 1px;
+}
+
+/* Checkbox and Radio */
+.win95-checkbox {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  background-color: var(--win-input-bg);
+  border-top: 2px solid var(--win-surface-deep);
+  border-left: 2px solid var(--win-surface-deep);
+  border-right: 2px solid var(--win-highlight);
+  border-bottom: 2px solid var(--win-highlight);
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+.win95-checkbox:checked::before {
+  content: "✔";
+  font-size: 10px;
+  font-weight: bold;
+  color: #000000;
+  line-height: 1;
+}
+
+/* Classic Desktop Icon Grid */
+.win95-desktop-icon {
+  width: 72px;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  border: 1px dotted transparent;
+}
+
+.win95-desktop-icon.selected {
+  border: 1px dotted #FFFFFF;
+}
+
+.win95-desktop-icon.selected .win95-icon-label {
+  background-color: var(--win-selection-bg);
+  color: var(--win-selection-text);
+}
+
+.win95-icon-label {
+  font-family: var(--win-font-system);
+  font-size: 11px;
+  color: #FFFFFF;
+  text-shadow: 1px 1px 1px #000000;
+  padding: 1px 3px;
+  margin-top: 4px;
+  line-height: 1.2;
+  word-break: break-word;
+}

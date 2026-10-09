@@ -1,0 +1,1025 @@
+{
+  "dataset_metadata": {
+    "file_name": "transaction_dataset.csv",
+    "file_format": ".csv",
+    "file_size_mb": 2.75,
+    "total_rows": 9841,
+    "total_columns": 51,
+    "data_types_breakdown": {
+      "float64": 39,
+      "int64": 9,
+      "object": 3
+    }
+  },
+  "quality_and_integrity": {
+    "exact_duplicate_rows": 0,
+    "feature_duplicate_rows": 546,
+    "columns_with_missing_values": {
+      "Total ERC20 tnxs": 829,
+      "ERC20 total Ether received": 829,
+      "ERC20 total ether sent": 829,
+      "ERC20 total Ether sent contract": 829,
+      "ERC20 uniq sent addr": 829,
+      "ERC20 uniq rec addr": 829,
+      "ERC20 uniq sent addr.1": 829,
+      "ERC20 uniq rec contract addr": 829,
+      "ERC20 avg time between sent tnx": 829,
+      "ERC20 avg time between rec tnx": 829,
+      "ERC20 avg time between rec 2 tnx": 829,
+      "ERC20 avg time between contract tnx": 829,
+      "ERC20 min val rec": 829,
+      "ERC20 max val rec": 829,
+      "ERC20 avg val rec": 829,
+      "ERC20 min val sent": 829,
+      "ERC20 max val sent": 829,
+      "ERC20 avg val sent": 829,
+      "ERC20 min val sent contract": 829,
+      "ERC20 max val sent contract": 829,
+      "ERC20 avg val sent contract": 829,
+      "ERC20 uniq sent token name": 829,
+      "ERC20 uniq rec token name": 829,
+      "ERC20 most sent token type": 2697,
+      "ERC20_most_rec_token_type": 871
+    },
+    "total_missing_cells": 22635,
+    "constant_columns": [
+      "ERC20 avg time between sent tnx",
+      "ERC20 avg time between rec tnx",
+      "ERC20 avg time between rec 2 tnx",
+      "ERC20 avg time between contract tnx",
+      "ERC20 min val sent contract",
+      "ERC20 max val sent contract",
+      "ERC20 avg val sent contract"
+    ],
+    "quasi_constant_columns": [
+      "min value sent to contract",
+      "max val sent to contract",
+      "avg value sent to contract",
+      "total ether sent contracts"
+    ],
+    "potential_leakage_identifiers": [
+      "raw_row_id",
+      "Index",
+      "Address"
+    ]
+  },
+  "target_analysis": {
+    "target_col": "FLAG",
+    "unique_values": [
+      0,
+      1
+    ],
+    "class_counts": {
+      "0": 7662,
+      "1": 2179
+    },
+    "missing_count": 0,
+    "is_binary": true
+  },
+  "candidate_targets_detected": [
+    "FLAG"
+  ],
+  "columns_detail": [
+    {
+      "name": "raw_row_id",
+      "dtype": "int64",
+      "unique_count": 9841,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": true
+    },
+    {
+      "name": "Index",
+      "dtype": "int64",
+      "unique_count": 4729,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": true
+    },
+    {
+      "name": "Address",
+      "dtype": "object",
+      "unique_count": 9816,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": true
+    },
+    {
+      "name": "FLAG",
+      "dtype": "int64",
+      "unique_count": 2,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "Avg min between sent tnx",
+      "dtype": "float64",
+      "unique_count": 5013,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "Avg min between received tnx",
+      "dtype": "float64",
+      "unique_count": 6223,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "Time Diff between first and last (Mins)",
+      "dtype": "float64",
+      "unique_count": 7810,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "Sent tnx",
+      "dtype": "int64",
+      "unique_count": 641,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "Received Tnx",
+      "dtype": "int64",
+      "unique_count": 727,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "Number of Created Contracts",
+      "dtype": "int64",
+      "unique_count": 20,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "Unique Received From Addresses",
+      "dtype": "int64",
+      "unique_count": 256,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "Unique Sent To Addresses",
+      "dtype": "int64",
+      "unique_count": 258,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "min value received",
+      "dtype": "float64",
+      "unique_count": 4589,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "max value received",
+      "dtype": "float64",
+      "unique_count": 6302,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "avg val received",
+      "dtype": "float64",
+      "unique_count": 6767,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "min val sent",
+      "dtype": "float64",
+      "unique_count": 4719,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "max val sent",
+      "dtype": "float64",
+      "unique_count": 6647,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "avg val sent",
+      "dtype": "float64",
+      "unique_count": 5854,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "min value sent to contract",
+      "dtype": "float64",
+      "unique_count": 3,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "max val sent to contract",
+      "dtype": "float64",
+      "unique_count": 4,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "avg value sent to contract",
+      "dtype": "float64",
+      "unique_count": 4,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "total transactions (including tnx to create contract",
+      "dtype": "int64",
+      "unique_count": 897,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "total Ether sent",
+      "dtype": "float64",
+      "unique_count": 5868,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "total ether received",
+      "dtype": "float64",
+      "unique_count": 6728,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "total ether sent contracts",
+      "dtype": "float64",
+      "unique_count": 4,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "total ether balance",
+      "dtype": "float64",
+      "unique_count": 5717,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "Total ERC20 tnxs",
+      "dtype": "float64",
+      "unique_count": 300,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 total Ether received",
+      "dtype": "float64",
+      "unique_count": 3460,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 total ether sent",
+      "dtype": "float64",
+      "unique_count": 1415,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 total Ether sent contract",
+      "dtype": "float64",
+      "unique_count": 29,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 uniq sent addr",
+      "dtype": "float64",
+      "unique_count": 107,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 uniq rec addr",
+      "dtype": "float64",
+      "unique_count": 147,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 uniq sent addr.1",
+      "dtype": "float64",
+      "unique_count": 4,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 uniq rec contract addr",
+      "dtype": "float64",
+      "unique_count": 123,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 avg time between sent tnx",
+      "dtype": "float64",
+      "unique_count": 1,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": true,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 avg time between rec tnx",
+      "dtype": "float64",
+      "unique_count": 1,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": true,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 avg time between rec 2 tnx",
+      "dtype": "float64",
+      "unique_count": 1,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": true,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 avg time between contract tnx",
+      "dtype": "float64",
+      "unique_count": 1,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": true,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 min val rec",
+      "dtype": "float64",
+      "unique_count": 1276,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 max val rec",
+      "dtype": "float64",
+      "unique_count": 2647,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 avg val rec",
+      "dtype": "float64",
+      "unique_count": 3380,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 min val sent",
+      "dtype": "float64",
+      "unique_count": 476,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 max val sent",
+      "dtype": "float64",
+      "unique_count": 1130,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 avg val sent",
+      "dtype": "float64",
+      "unique_count": 1309,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 min val sent contract",
+      "dtype": "float64",
+      "unique_count": 1,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": true,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 max val sent contract",
+      "dtype": "float64",
+      "unique_count": 1,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": true,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 avg val sent contract",
+      "dtype": "float64",
+      "unique_count": 1,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": true,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 uniq sent token name",
+      "dtype": "float64",
+      "unique_count": 70,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 uniq rec token name",
+      "dtype": "float64",
+      "unique_count": 121,
+      "null_count": 829,
+      "null_percentage": 8.42,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20 most sent token type",
+      "dtype": "object",
+      "unique_count": 304,
+      "null_count": 2697,
+      "null_percentage": 27.41,
+      "is_constant": false,
+      "is_leakage_risk": false
+    },
+    {
+      "name": "ERC20_most_rec_token_type",
+      "dtype": "object",
+      "unique_count": 466,
+      "null_count": 871,
+      "null_percentage": 8.85,
+      "is_constant": false,
+      "is_leakage_risk": false
+    }
+  ],
+  "numeric_summary": {
+    "raw_row_id": {
+      "count": 9841.0,
+      "mean": 4920.0,
+      "std": 2840.9963,
+      "min": 0.0,
+      "25%": 2460.0,
+      "50%": 4920.0,
+      "75%": 7380.0,
+      "max": 9840.0
+    },
+    "Index": {
+      "count": 9841.0,
+      "mean": 1815.0499,
+      "std": 1222.6218,
+      "min": 1.0,
+      "25%": 821.0,
+      "50%": 1641.0,
+      "75%": 2601.0,
+      "max": 4729.0
+    },
+    "FLAG": {
+      "count": 9841.0,
+      "mean": 0.2214,
+      "std": 0.4152,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 1.0
+    },
+    "Avg min between sent tnx": {
+      "count": 9841.0,
+      "mean": 5086.8787,
+      "std": 21486.55,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 17.34,
+      "75%": 565.47,
+      "max": 430287.67
+    },
+    "Avg min between received tnx": {
+      "count": 9841.0,
+      "mean": 8004.8512,
+      "std": 23081.7148,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 509.77,
+      "75%": 5480.39,
+      "max": 482175.49
+    },
+    "Time Diff between first and last (Mins)": {
+      "count": 9841.0,
+      "mean": 218333.2577,
+      "std": 322937.9257,
+      "min": 0.0,
+      "25%": 316.93,
+      "50%": 46637.03,
+      "75%": 304070.98,
+      "max": 1954860.95
+    },
+    "Sent tnx": {
+      "count": 9841.0,
+      "mean": 115.9317,
+      "std": 757.2264,
+      "min": 0.0,
+      "25%": 1.0,
+      "50%": 3.0,
+      "75%": 11.0,
+      "max": 10000.0
+    },
+    "Received Tnx": {
+      "count": 9841.0,
+      "mean": 163.7009,
+      "std": 940.8366,
+      "min": 0.0,
+      "25%": 1.0,
+      "50%": 4.0,
+      "75%": 27.0,
+      "max": 10000.0
+    },
+    "Number of Created Contracts": {
+      "count": 9841.0,
+      "mean": 3.7297,
+      "std": 141.4456,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 9995.0
+    },
+    "Unique Received From Addresses": {
+      "count": 9841.0,
+      "mean": 30.3609,
+      "std": 298.6211,
+      "min": 0.0,
+      "25%": 1.0,
+      "50%": 2.0,
+      "75%": 5.0,
+      "max": 9999.0
+    },
+    "Unique Sent To Addresses": {
+      "count": 9841.0,
+      "mean": 25.8402,
+      "std": 263.8204,
+      "min": 0.0,
+      "25%": 1.0,
+      "50%": 2.0,
+      "75%": 3.0,
+      "max": 9287.0
+    },
+    "min value received": {
+      "count": 9841.0,
+      "mean": 43.8452,
+      "std": 325.9291,
+      "min": 0.0,
+      "25%": 0.001,
+      "50%": 0.0959,
+      "75%": 2.0,
+      "max": 10000.0
+    },
+    "max value received": {
+      "count": 9841.0,
+      "mean": 523.1525,
+      "std": 13008.8215,
+      "min": 0.0,
+      "25%": 1.0,
+      "50%": 6.0,
+      "75%": 67.067,
+      "max": 800000.0
+    },
+    "avg val received": {
+      "count": 9841.0,
+      "mean": 100.7117,
+      "std": 2885.0022,
+      "min": 0.0,
+      "25%": 0.4269,
+      "50%": 1.7297,
+      "75%": 22.0,
+      "max": 283618.8316
+    },
+    "min val sent": {
+      "count": 9841.0,
+      "mean": 4.8001,
+      "std": 138.6097,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0491,
+      "75%": 0.9988,
+      "max": 12000.0
+    },
+    "max val sent": {
+      "count": 9841.0,
+      "mean": 314.6173,
+      "std": 6629.2126,
+      "min": 0.0,
+      "25%": 0.1646,
+      "50%": 4.9994,
+      "75%": 61.5207,
+      "max": 520000.0
+    },
+    "avg val sent": {
+      "count": 9841.0,
+      "mean": 44.7557,
+      "std": 239.0802,
+      "min": 0.0,
+      "25%": 0.0862,
+      "50%": 1.606,
+      "75%": 21.9994,
+      "max": 12000.0
+    },
+    "min value sent to contract": {
+      "count": 9841.0,
+      "mean": 0.0,
+      "std": 0.0002,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.02
+    },
+    "max val sent to contract": {
+      "count": 9841.0,
+      "mean": 0.0,
+      "std": 0.0005,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.046
+    },
+    "avg value sent to contract": {
+      "count": 9841.0,
+      "mean": 0.0,
+      "std": 0.0003,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.023
+    },
+    "total transactions (including tnx to create contract": {
+      "count": 9841.0,
+      "mean": 283.3624,
+      "std": 1352.404,
+      "min": 0.0,
+      "25%": 4.0,
+      "50%": 8.0,
+      "75%": 54.0,
+      "max": 19995.0
+    },
+    "total Ether sent": {
+      "count": 9841.0,
+      "mean": 10160.9233,
+      "std": 358322.7116,
+      "min": 0.0,
+      "25%": 0.2262,
+      "50%": 12.4868,
+      "75%": 100.999,
+      "max": 28580960.89
+    },
+    "total ether received": {
+      "count": 9841.0,
+      "mean": 11638.3186,
+      "std": 364204.7731,
+      "min": 0.0,
+      "25%": 2.6704,
+      "50%": 30.5296,
+      "75%": 101.0,
+      "max": 28581590.07
+    },
+    "total ether sent contracts": {
+      "count": 9841.0,
+      "mean": 0.0,
+      "std": 0.0005,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.046
+    },
+    "total ether balance": {
+      "count": 9841.0,
+      "mean": 1477.3953,
+      "std": 242425.4229,
+      "min": -15605352.04,
+      "25%": 0.0006,
+      "50%": 0.0017,
+      "75%": 0.0445,
+      "max": 14288636.26
+    },
+    "Total ERC20 tnxs": {
+      "count": 9012.0,
+      "mean": 36.2557,
+      "std": 447.5289,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 1.0,
+      "75%": 3.0,
+      "max": 10001.0
+    },
+    "ERC20 total Ether received": {
+      "count": 9012.0,
+      "mean": 129620673.2436,
+      "std": 10538584109.428,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 100.337,
+      "max": 1000020000000.0
+    },
+    "ERC20 total ether sent": {
+      "count": 9012.0,
+      "mean": 13868492.6095,
+      "std": 1180389999.8599,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 112000000000.0
+    },
+    "ERC20 total Ether sent contract": {
+      "count": 9012.0,
+      "mean": 110.9392,
+      "std": 6128.635,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 416000.0
+    },
+    "ERC20 uniq sent addr": {
+      "count": 9012.0,
+      "mean": 5.638,
+      "std": 105.2525,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 6582.0
+    },
+    "ERC20 uniq rec addr": {
+      "count": 9012.0,
+      "mean": 7.5985,
+      "std": 81.8185,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 1.0,
+      "75%": 2.0,
+      "max": 4293.0
+    },
+    "ERC20 uniq sent addr.1": {
+      "count": 9012.0,
+      "mean": 0.0034,
+      "std": 0.0657,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 3.0
+    },
+    "ERC20 uniq rec contract addr": {
+      "count": 9012.0,
+      "mean": 4.9019,
+      "std": 17.2466,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 1.0,
+      "75%": 2.0,
+      "max": 782.0
+    },
+    "ERC20 avg time between sent tnx": {
+      "count": 9012.0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.0
+    },
+    "ERC20 avg time between rec tnx": {
+      "count": 9012.0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.0
+    },
+    "ERC20 avg time between rec 2 tnx": {
+      "count": 9012.0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.0
+    },
+    "ERC20 avg time between contract tnx": {
+      "count": 9012.0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.0
+    },
+    "ERC20 min val rec": {
+      "count": 9012.0,
+      "mean": 485.6147,
+      "std": 16883.2787,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0015,
+      "max": 990000.0
+    },
+    "ERC20 max val rec": {
+      "count": 9012.0,
+      "mean": 125252360.1524,
+      "std": 10537407457.234,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 99.0,
+      "max": 1000000000000.0
+    },
+    "ERC20 avg val rec": {
+      "count": 9012.0,
+      "mean": 4346203.069,
+      "std": 214119242.0134,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 29.4647,
+      "max": 17241810275.0
+    },
+    "ERC20 min val sent": {
+      "count": 9012.0,
+      "mean": 11741.2573,
+      "std": 1053567.123,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 100000000.0
+    },
+    "ERC20 max val sent": {
+      "count": 9012.0,
+      "mean": 13035935.1519,
+      "std": 1179905145.2608,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 112000000000.0
+    },
+    "ERC20 avg val sent": {
+      "count": 9012.0,
+      "mean": 6318389.1346,
+      "std": 591476414.6863,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 56147560976.0
+    },
+    "ERC20 min val sent contract": {
+      "count": 9012.0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.0
+    },
+    "ERC20 max val sent contract": {
+      "count": 9012.0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.0
+    },
+    "ERC20 avg val sent contract": {
+      "count": 9012.0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 0.0
+    },
+    "ERC20 uniq sent token name": {
+      "count": 9012.0,
+      "mean": 1.3849,
+      "std": 6.7351,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0,
+      "75%": 0.0,
+      "max": 213.0
+    },
+    "ERC20 uniq rec token name": {
+      "count": 9012.0,
+      "mean": 4.8267,
+      "std": 16.6786,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 1.0,
+      "75%": 2.0,
+      "max": 737.0
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import { env } from './config/env.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { apiRateLimiter } from './middleware/rateLimiter.js';
@@ -27,6 +28,9 @@ export function createApp(): Express {
       allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     })
   );
+
+  // Cookie Parser for HttpOnly Refresh Tokens
+  app.use(cookieParser());
 
   // Body Parsers
   app.use(express.json({ limit: '1mb' }));

@@ -36,12 +36,13 @@ For complete technical specifications, sequence diagrams, and an explanation of 
 ## 2. Technology Stack
 
 ### Frontend (`client/`)
-* **Core Framework**: React 18 with TypeScript and Vite
-* **Styling**: Tailwind CSS v4 with dark cybersecurity visual theme
-* **Routing**: React Router DOM
-* **State & Data Fetching**: TanStack Query (React Query) with shared query client
-* **HTTP Client**: Axios with configured base URL and interceptors
-* **Visualization & Icons**: Recharts and Lucide React
+* **Interface Architecture**: Authentic **Windows 95 Retro Desktop Workstation** (`FraudOS 95`).
+* **Core Framework**: React 18 with TypeScript and Vite.
+* **Bevel & Theming Engine**: Custom 1995 2-stage outset/inset bevel borders, MS Sans Serif system typography, and color schemes (Classic Teal, Cobalt Navy, Terminal Matrix, Dark Charcoal).
+* **Desktop Environment**: Draggable windows, taskbar with Start button, system tray, digital clock, window tabs, minimize/maximize/restore, and desktop shortcut icons.
+* **Audio & Tactile Feedback**: In-memory retro sound synthesis using Web Audio API (zero audio assets, defaults to OFF) and mobile haptics (`navigator.vibrate`).
+* **Routing**: React Router DOM with classic Windows dialogs for `/login`, `/register`, and `/404`.
+* **State & Data Fetching**: TanStack Query (React Query) with Axios interceptors.
 
 ### Backend (`server/`)
 * **Runtime**: Node.js LTS (v20+) with TypeScript and `tsx`
@@ -199,27 +200,31 @@ Ensure `CLIENT_URL=http://localhost:5173` matches the exact host and port servin
 
 ---
 
-## 9. Project Roadmap & Planned Stages
+## 9. Project Roadmap & Implementation Stages
 
-- [x] **Stage 1: Project Foundation & Baseline Monorepo Scaffold** *(Current)*
+- [x] **Stage 1: Project Foundation & Baseline Monorepo Scaffold**
   - Modular Express + TypeScript backend with Zod, Helmet, rate limiting, and Pino.
-  - React 18 + Vite + TypeScript + Tailwind CSS v4 frontend console with live telemetry.
-  - Readiness and liveness probes.
-  - Python FastAPI microservice skeleton with pinned requirements.
-- [ ] **Stage 2: Machine Learning & Feature Engineering Pipeline**
-  - Dataset acquisition and preprocessing pipeline.
-  - 42-dimensional behavioral feature extraction.
-  - XGBoost fraud classification model training and serialization.
-  - TreeSHAP local explainability integration.
-- [ ] **Stage 3: Ethereum Blockchain Data Ingestion Layer**
-  - Indexed transaction history ingestion via Etherscan / Alchemy Enhanced APIs.
-  - Live state and bytecode inspection via Ethers.js.
-  - Feature normalization and caching in MongoDB Atlas.
-- [ ] **Stage 4: Authentication, Case Management & Forensic Auditing**
-  - JWT authentication with secure HTTP-only refresh tokens.
-  - Persistent investigation dossiers and analyst notes.
-  - Role-based access control (Analyst, Auditor, Admin).
-- [ ] **Stage 5: Interactive Visualizations & Production Hardening**
-  - Recharts radar charts for feature importance and risk distributions.
-  - Network graph visualizer for transaction counterparty clusters.
-  - Docker Compose deployment orchestrations and CI/CD pipelines.
+  - React 18 + Vite + TypeScript + Tailwind CSS dark-themed frontend console.
+  - Readiness and liveness probes (`/api/v1/health`, `/api/v1/ready`).
+- [x] **Stage 2: Secure Authentication & Session Management**
+  - Robust JWT authentication with access token in memory and rotating HttpOnly refresh cookies.
+  - Revocable user sessions stored in MongoDB Atlas, password hashing via bcrypt.
+  - Security suite: CSRF protection, rate limiting on `/login` and `/register`, safe user sanitization.
+  - Professional cybersecurity-themed `/login`, `/register`, and protected `/dashboard` frontend.
+  - 18 automated backend Vitest integration tests covering full auth lifecycles.
+- [x] **Stage 3: Ethereum Fraud Detection Machine Learning Pipeline**
+  - Real Kaggle dataset acquisition (`vagifa/ethereum-frauddetection-dataset`, 9,841 accounts, 51 features).
+  - Preprocessing engine with entity-aware stratified splitting to guarantee 0 address memorization leakage.
+  - Exploratory data analysis (EDA) with automated distribution, class imbalance, and correlation plots.
+  - Benchmark comparison across baseline Dummy, Logistic Regression, Random Forest, and XGBoost.
+  - Champion model: **XGBoost Classifier** achieving **0.9985 ROC-AUC**, **0.9955 PR-AUC**, **98.41% Precision**, and **94.50% Recall** at calibrated threshold 0.62.
+  - Explainable AI (XAI) using TreeSHAP generating global beeswarm and feature importance rankings.
+  - Artifact serialization (`ethereum_fraud_model_v1.joblib`, `model_metadata.json`).
+  - Real-world blockchain compatibility analysis for RPC & Etherscan ingestion.
+  - 12 automated unit tests (`pytest`) covering data loader, preprocessor, and model pipeline.
+- [ ] **Stage 4: FastAPI Prediction Service & Inference Integration**
+  - High-throughput FastAPI endpoints (`/predict`, `/explain`).
+  - Integration with Node.js backend gateway and real-time wallet risk scoring.
+- [ ] **Stage 5: Blockchain Ingestion, Case Management & Interactive Forensics**
+  - Real-time address feature extraction via Etherscan / Ethereum RPC.
+  - Risk radar charts, transaction counterparty network graphs, and investigator notes.
