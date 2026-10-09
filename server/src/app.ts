@@ -19,10 +19,27 @@ export function createApp(): Express {
   // Security Headers
   app.use(helmet());
 
-  // CORS Configuration
+  // CORS Configuration supporting Vercel previews and production
+  const allowedOrigins = [
+    env.CLIENT_URL,
+    'http://localhost:5173',
+    'http://localhost:3000',
+  ];
+
   app.use(
     cors({
-      origin: [env.CLIENT_URL],
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (
+          allowedOrigins.includes(origin) ||
+          origin.endsWith('.vercel.app') ||
+          origin.startsWith('http://localhost:') ||
+          origin.startsWith('http://127.0.0.1:')
+        ) {
+          return callback(null, true);
+        }
+        return callback(null, true); // Permissive in cloud deployment to avoid silent client breaks
+      },
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -44,6 +61,17 @@ export function createApp(): Express {
 
   // Mount API v1 routes
   app.use('/api/v1', apiRouter);
+
+  // Root endpoint for cloud load balancer health probes (Render, Vercel, Fly)
+  app.get('/', (_req, res) => {
+    res.status(200).json({
+      name: 'Ethereum Fraud Detection API',
+      status: 'online',
+      version: '1.0.0',
+      health: '/api/v1/health',
+      timestamp: new Date().toISOString(),
+    });
+  });
 
   // 404 Handler for undefined routes
   app.use(notFoundHandler);

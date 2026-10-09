@@ -2,8 +2,12 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import { ApiResponse } from '../types/api';
 import { AuthResponseData } from '../types/auth';
 
-// Default to backend API v1 if environment variable is not defined
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+// Default to Render backend in production, or localhost in local development
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.PROD
+    ? 'https://ethereum-fraud-backend.onrender.com/api/v1'
+    : 'http://localhost:5000/api/v1');
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
