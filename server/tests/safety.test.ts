@@ -119,4 +119,23 @@ describe('Data Safety & Ingestion Pipeline Integrity', () => {
     expect(isProtected('ethereum_fraud_dev')).toBe(true);
     expect(isProtected('sample_mflix')).toBe(false); // Unrelated sample db is not protected
   });
+
+  it('6. Both /api/v1/auth/register and fallback /auth/register are accepted without 404', async () => {
+    const supertest = (await import('supertest')).default;
+    const app = createApp();
+
+    // Route /auth/register should hit auth handler (validation fails with 400, NOT 404)
+    const fallbackRes = await supertest(app)
+      .post('/auth/register')
+      .send({});
+    expect(fallbackRes.status).not.toBe(404);
+    expect(fallbackRes.status).toBe(400);
+
+    // Canonical route /api/v1/auth/register should also hit auth handler
+    const canonicalRes = await supertest(app)
+      .post('/api/v1/auth/register')
+      .send({});
+    expect(canonicalRes.status).not.toBe(404);
+    expect(canonicalRes.status).toBe(400);
+  });
 });

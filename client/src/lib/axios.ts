@@ -2,12 +2,26 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import { ApiResponse } from '../types/api';
 import { AuthResponseData } from '../types/auth';
 
-// Default to Render backend in production, or localhost in local development
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  (import.meta.env.PROD
-    ? 'https://ethereum-fraud-backend.onrender.com/api/v1'
-    : 'http://localhost:5000/api/v1');
+// Robust API Base URL resolution supporting bare hostnames, /api, and /api/v1
+function resolveApiBaseUrl(): string {
+  const envUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+  if (!envUrl) {
+    return import.meta.env.PROD
+      ? 'https://ethereum-fraud-backend.onrender.com/api/v1'
+      : 'http://localhost:5000/api/v1';
+  }
+  let cleaned = envUrl.replace(/\/+$/, '');
+  if (!cleaned.endsWith('/api/v1')) {
+    if (cleaned.endsWith('/api')) {
+      cleaned = `${cleaned}/v1`;
+    } else {
+      cleaned = `${cleaned}/api/v1`;
+    }
+  }
+  return cleaned;
+}
+
+const API_BASE_URL = resolveApiBaseUrl();
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,

@@ -56,11 +56,9 @@ export function createApp(): Express {
   // HTTP Request Logging
   app.use(requestLogger);
 
-  // Rate Limiting on API endpoints
+  // Rate Limiting on API and Auth endpoints
   app.use('/api', apiRateLimiter);
-
-  // Mount API v1 routes
-  app.use('/api/v1', apiRouter);
+  app.use('/auth', apiRateLimiter);
 
   // Root endpoint for cloud load balancer health probes (Render, Vercel, Fly)
   app.get('/', (_req, res) => {
@@ -72,6 +70,13 @@ export function createApp(): Express {
       timestamp: new Date().toISOString(),
     });
   });
+
+  // Mount API v1 canonical routes
+  app.use('/api/v1', apiRouter);
+
+  // Mount API aliases (supports clients configured without /api/v1 prefix)
+  app.use('/api', apiRouter);
+  app.use('/', apiRouter);
 
   // 404 Handler for undefined routes
   app.use(notFoundHandler);
