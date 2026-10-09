@@ -287,3 +287,6 @@ The importer validates the `FLAG` target column, verifies binary class distribut
   - Real-time address feature extraction via Etherscan / Ethereum RPC.
   - Risk radar charts, transaction counterparty network graphs, and investigator notes.
 
+dataset used 
+https://www.kaggle.com/datasets/vagifa/ethereum-frauddetection-dataset/data
+https://www.kaggle.com/datasets?search=ethereum+fraud
