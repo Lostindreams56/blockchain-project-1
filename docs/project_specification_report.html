@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ethereum Fraud Detection & Risk Intelligence Platform - Technical Specification</title>
+<style>
+  @page {
+    size: A4;
+    margin: 14mm 12mm 16mm 12mm;
+    @bottom-right {
+      content: "Page " counter(page);
+      font-size: 8pt;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #64748b;
+    }
+    @bottom-left {
+      content: "Ethereum Fraud Detection Platform | Architecture & Specification";
+      font-size: 8pt;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #64748b;
+    }
+  }
+
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background: #ffffff;
+    font-size: 9.5pt;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3, h4, h5 {
+    color: #0f172a;
+    font-weight: 700;
+    margin-top: 1.2em;
+    margin-bottom: 0.5em;
+    page-break-after: avoid;
+  }
+
+  h1 { font-size: 20pt; border-bottom: 2px solid #0284c7; padding-bottom: 4px; margin-top: 0; }
+  h2 { font-size: 14pt; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; color: #0369a1; }
+  h3 { font-size: 11pt; color: #0f766e; }
+  h4 { font-size: 10pt; color: #334155; }
+
+  p { margin: 0.4em 0 0.8em 0; text-align: justify; }
+
+  .page-break { page-break-before: always; }
+  .no-break { page-break-inside: avoid; }
+
+  /* Code and Monospace */
+  code, pre {
+    font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+  }
+  code {
+    background-color: #f1f5f9;
+    color: #0f766e;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 8.5pt;
+    border: 1px solid #e2e8f0;
+  }
+  pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 10px 12px;
+    border-radius: 4px;
+    font-size: 8pt;
+    line-height: 1.35;
+    overflow-x: auto;
+    margin: 0.6em 0;
+    page-break-inside: avoid;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.8em 0;
+    font-size: 8.5pt;
+    page-break-inside: avoid;
+  }
+  th, td {
+    padding: 5px 8px;
+    border: 1px solid #cbd5e1;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-weight: 600;
+  }
+  tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+
+  /* Badges & Tags */
+  .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 7.5pt;
+    font-weight: 600;
+    font-family: monospace;
+  }
+  .badge-blue { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+  .badge-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+  .badge-amber { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+  .badge-red { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+  .badge-purple { background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+
+  /* Callout boxes */
+  .callout {
+    border-left: 4px solid #0284c7;
+    background: #f0f9ff;
+    padding: 8px 12px;
+    margin: 0.8em 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 8.5pt;
+  }
+  .callout-title {
+    font-weight: 700;
+    color: #0369a1;
+    margin-bottom: 3px;
+  }
+  .callout-warning {
+    border-left-color: #eab308;
+    background: #fefce8;
+  }
+  .callout-warning .callout-title { color: #a16207; }
+
+  /* Cover Page */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 95vh;
+    padding: 40px 20px 20px 20px;
+    page-break-after: always;
+  }
+  .cover-header {
+    border-bottom: 4px solid #0284c7;
+    padding-bottom: 25px;
+  }
+  .cover-title {
+    font-size: 26pt;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.15;
+    margin: 0 0 10px 0;
+  }
+  .cover-subtitle {
+    font-size: 13pt;
+    color: #0369a1;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+  }
+  .cover-meta {
+    font-size: 9pt;
+    color: #475569;
+    line-height: 1.6;
+  }
+  .cover-badges {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+  }
+  .cover-body {
+    margin: 40px 0;
+    padding: 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+  }
+  .cover-footer {
+    border-top: 1px solid #cbd5e1;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 8.5pt;
+    color: #64748b;
+  }
+
+  /* Retro Windows 95 Visual Container */
+  .win95-window {
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    box-shadow: 1px 1px 0px #000000;
+    padding: 3px;
+    font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+    color: #000;
+    margin: 12px 0;
+    font-size: 8pt;
+    page-break-inside: avoid;
+  }
+  .win95-titlebar {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: #ffffff;
+    padding: 2px 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 8pt;
+  }
+  .win95-titlebar-btn {
+    background: #c0c0c0;
+    border: 1px solid;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    box-shadow: 1px 1px 0px #000000;
+    width: 14px;
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-family: monospace;
+    color: #000;
+  }
+  .win95-client {
+    padding: 8px;
+    background: #c0c0c0;
+  }
+  .win95-sunken {
+    border: 2px solid;
+    border-color: #808080 #ffffff #ffffff #808080;
+    background: #ffffff;
+    padding: 6px;
+    box-shadow: inset 1px 1px 0px #000;
+  }
+  .win95-btn {
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    box-shadow: 1px 1px 0px #000;
+    padding: 2px 10px;
+    font-size: 8pt;
+    font-weight: 600;
+    display: inline-block;
+  }
+  .win95-btn-pressed {
+    border-color: #808080 #ffffff #ffffff #808080;
+    background: #d4d0c8;
+    box-shadow: inset 1px 1px 0px #000;
+  }
+
+  /* SVG diagrams */
+  .diagram-container {
+    text-align: center;
+    margin: 15px 0;
+    page-break-inside: avoid;
+  }
+  .diagram-container svg {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    background: #ffffff;
+  }
+  .diagram-caption {
+    font-size: 8pt;
+    color: #64748b;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .metric-card {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .metric-value {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #0369a1;
+    font-family: monospace;
+  }
+  .metric-label {
+    font-size: 7.5pt;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= COVER PAGE ================= -->
+<div class="cover">
+  <div class="cover-header">
+    <div style="color: #0369a1; font-weight: 700; letter-spacing: 1.5px; font-size: 9pt; text-transform: uppercase; margin-bottom: 6px;">
+      Enterprise Technical Architecture & Software Engineering Specification
+    </div>
+    <h1 class="cover-title">Ethereum Fraud Detection &amp; Risk Intelligence Platform</h1>
+    <div class="cover-subtitle">FraudOS 95 Retro Workstation × Supervised Machine Learning Pipeline</div>
+    <div class="cover-meta">
+      <strong>Document Reference:</strong> ETH-FRAUD-SPEC-V1.0.0<br>
+      <strong>Target Platform:</strong> Hybrid Cloud Distributed (Vercel SPA + Render Node API + MongoDB Atlas + Python FastAPI ML)<br>
+      <strong>Monorepo Repository:</strong> Lostindreams56/blockchain-project-1<br>
+      <strong>Release Date:</strong> October 2026 | Production Build Ready
+    </div>
+    <div class="cover-badges">
+      <span class="badge badge-blue">React 18 + TypeScript</span>
+      <span class="badge badge-purple">Windows 95 Retro UI</span>
+      <span class="badge badge-green">Node.js Express Gateway</span>
+      <span class="badge badge-amber">MongoDB Atlas (Mongoose)</span>
+      <span class="badge badge-blue">Python FastAPI Microservice</span>
+      <span class="badge badge-red">XGBoost Classifier (0.9985 ROC-AUC)</span>
+      <span class="badge badge-green">TreeSHAP Explainability</span>
+    </div>
+  </div>
+
+  <div class="cover-body">
+    <h3 style="margin-top:0; color:#0f172a;">Executive Summary &amp; Scope of Document</h3>
+    <p>
+      This document constitutes the comprehensive engineering blueprint, software architecture, data dictionary, UML diagrams, entity-relationship models, and operational runbook for the <strong>Ethereum Fraud Detection &amp; Risk Intelligence Platform</strong>.
+    </p>
+    <p>
+      The platform addresses a fundamental cybersecurity and forensic challenge on the Ethereum blockchain: discerning benign user transactions from sophisticated illicit activities—including Ponzi schemes, burner dumper clusters, phishing drainers, smart contract honeypots, and token wash trading. Built with a distinctive <strong>Windows 95 Retro Desktop Workstation (FraudOS 95)</strong> frontend interface, the application bridges late-1990s system aesthetics with state-of-the-art cybersecurity analytics, TreeSHAP feature attributions, and a high-accuracy XGBoost classifier evaluated on real-world Kaggle Ethereum transaction datasets.
+    </p>
+    <p>
+      <strong>Key Contents Included in this Document:</strong>
+    </p>
+    <ul style="margin: 0; padding-left: 20px; font-size: 8.5pt;">
+      <li><strong>Section 1:</strong> System Architecture & Distributed Multi-Tier Topology</li>
+      <li><strong>Section 2:</strong> Unified Modeling Language (UML) Component, Class & Sequence Diagrams</li>
+      <li><strong>Section 3:</strong> Hierarchical Module Decomposition (Client, Server, ML Engine, Tools)</li>
+      <li><strong>Section 4:</strong> Entity-Relationship (ER) Diagram & MongoDB Schema Designs</li>
+      <li><strong>Section 5:</strong> Exhaustive Data Dictionary (Core System + All 51 Ethereum Kaggle Features)</li>
+      <li><strong>Section 6:</strong> User Interface (UI) Design & Windows 95 Interaction Architecture</li>
+      <li><strong>Section 7:</strong> Machine Learning Engineering Pipeline & Model Benchmarks</li>
+      <li><strong>Section 8:</strong> Executable Runbook, Ingestion Pipeline & Cloud Deployment Runbook</li>
+      <li><strong>Section 9:</strong> Quality Assurance, Automated Tests & Verification Log Evidence</li>
+    </ul>
+  </div>
+
+  <div class="cover-footer">
+    <span>Author: Senior Full-Stack &amp; ML Systems Engineering Team</span>
+    <span>Confidential &amp; Proprietary Engineering Specification</span>
+  </div>
+</div>
+
+<!-- ================= TABLE OF CONTENTS & ARCHITECTURE ================= -->
+<div class="page-break"></div>
+
+<h2>1. System Architecture & High-Level Design</h2>
+
+<p>
+  The Ethereum Fraud Detection Platform is architected as a decoupled, multi-tier distributed system. Rather than tightly coupling blockchain indexing with frontend rendering, the platform divides responsibilities across five distinct tiers:
+</p>
+
+<ol>
+  <li><strong>Presentation Tier (FraudOS 95 Frontend):</strong> A React 18, TypeScript, and Vite single-page application (SPA) styled with custom 1995 2-stage outset/inset bevel borders, MS Sans Serif system typography, window manager state, and Web Audio API synthesized sounds.</li>
+  <li><strong>API Gateway & Orchestration Tier (Express Server):</strong> A Node.js LTS server providing JWT authentication, token rotation, rate limiting, request validation via Zod schemas, structured logging via Pino, and API routing.</li>
+  <li><strong>Machine Learning Microservice (FastAPI Inference Daemon):</strong> A Python 3.13 microservice exposing low-latency REST endpoints for XGBoost inference and TreeSHAP explainability.</li>
+  <li><strong>Data & Persistence Tier (MongoDB Atlas Cluster):</strong> Cloud document store with strict collection boundaries (<code>users</code>, <code>sessions</code>, <code>ethereum_dataset</code>, <code>investigations</code>).</li>
+  <li><strong>Decentralized Blockchain Ingestion Tier:</strong> Hybrid ingestion model leveraging both Ethereum JSON-RPC nodes and indexed block explorer APIs (Etherscan/Alchemy).</li>
+</ol>
+
+<div class="callout">
+  <div class="callout-title">Architectural Insight: The Blockchain Reverse-Index Ingestion Problem</div>
+  Standard Ethereum JSON-RPC nodes (Geth, Nethermind) organize state in block-level Patricia Merkle tries. They natively support <code>eth_getBalance</code> and <code>eth_getBlockByNumber</code>, but do <em>not</em> maintain an account-to-transaction reverse index. Querying lifetime transactions using only standard RPC requires scanning >21 million blocks. Hence, our architecture utilizes a hybrid ingestion model: indexed APIs for historical lifetime metrics combined with direct JSON-RPC for real-time balance and contract bytecode verification.
+</div>
+
+<div class="diagram-container">
+  <!-- SVG Architecture Component Diagram -->
+  <svg viewBox="0 0 780 430" width="100%" height="430" xmlns="http://www.w3.org/2000/svg">
+    <rect width="780" height="430" fill="#f8fafc" rx="6" />
+    <text x="390" y="24" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="13" font-weight="bold" fill="#0f172a">FIGURE 1.1: DISTRIBUTED MULTI-TIER SYSTEM TOPOLOGY & DEPLOYMENT ARCHITECTURE</text>
+
+    <!-- Client Box -->
+    <rect x="30" y="50" width="210" height="350" fill="#ffffff" stroke="#0284c7" stroke-width="2" rx="4" />
+    <rect x="30" y="50" width="210" height="28" fill="#0284c7" rx="4" />
+    <text x="135" y="69" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="bold" fill="#ffffff">PRESENTATION TIER (FraudOS 95)</text>
+    <text x="135" y="95" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="8.5" fill="#475569">Vercel Edge Global CDN</text>
+
+    <rect x="45" y="110" width="180" height="40" fill="#f0f9ff" stroke="#bae6fd" rx="3" />
+    <text x="135" y="126" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="bold" fill="#0369a1">DesktopShell &amp; Taskbar</text>
+    <text x="135" y="140" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748b">Window Manager &amp; Start Menu</text>
+
+    <rect x="45" y="160" width="180" height="40" fill="#f0f9ff" stroke="#bae6fd" rx="3" />
+    <text x="135" y="176" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="bold" fill="#0369a1">FraudScanner &amp; Explorer</text>
+    <text x="135" y="190" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748b">Address Query &amp; 45 Features</text>
+
+    <rect x="45" y="210" width="180" height="40" fill="#f0f9ff" stroke="#bae6fd" rx="3" />
+    <text x="135" y="226" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="bold" fill="#0369a1">ModelStatus &amp; Telemetry</text>
+    <text x="135" y="240" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748b">ROC-AUC &amp; Microservice Probes</text>
+
+    <rect x="45" y="260" width="180" height="40" fill="#f0f9ff" stroke="#bae6fd" rx="3" />
+    <text x="135" y="276" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="bold" fill="#0369a1">Audio &amp; Haptic Synthesis</text>
+    <text x="135" y="290" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748b">In-Memory Web Audio API</text>
+
+    <rect x="45" y="310" width="180" height="40" fill="#f0f9ff" stroke="#bae6fd" rx="3" />
+    <text x="135" y="326" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="bold" fill="#0369a1">Axios Interceptors &amp; Auth</text>
+    <text x="135" y="340" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748b">Bearer Token in RAM &amp; Auto-Refresh</text>
+
+    <!-- Gateway Box -->
+    <rect x="285" y="50" width="220" height="350" fill="#ffffff" stroke="#059669" stroke-width="2" rx="4" />
+    <rect x="285" y="50" width="220" height="28" fill="#059669" rx="4" />
+    <text x="395" y="69" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="bold" fill="#ffffff">API GATEWAY &amp; ORCHESTRATION</text>
+    <text x="395" y="95" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="8.5" fill="#475569">Render Cloud Web Service (Node 20+)</text>
+
+    <rect x="305" y="110" width="180" height="40" fill="#ecfdf5" stroke="#a7f3d0" rx="3" />
+    <text x="395" y="126" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="bold" fill="#047857">Security Perimeter</text>
+    <text x="395" y="140" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748b">Helmet, CORS Filter, Rate Limiter</text>
+
+    <rect x="305" y="160" width="180" height="40" fill="#ecfdf5" stroke="#a7f3d0" rx="3" />
+    <text x="395" y="176" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="bold" fill="#047857">Router Prefix Normalizer</text>
+    <text x="395" y="190" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748b">/api/v1, /api, and root / fallbacks</text>
+
+    <rect x="305" y="210" width="180" height="40" fill="#ecfdf5" stroke="#a7f3d0" rx="3" />
+    <text x="395" y="226" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="bold" fill="#047857">AuthService &amp; Token Rotation</text>
+    <text x="395" y="240" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748b">UUID Family Reuse Detection</text>
+
+    <rect x="305" y="260" width="180" height="40" fill="#ecfdf5" stroke="#a7f3d0" rx="3" />
+    <text x="395" y="276" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="bold" fill="#047857">Health &amp; Readiness Probes</text>
+    <text x="395" y="290" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748b">Liveness /health, Readiness /ready</text>
+
+    <rect x="305" y="310" width="180" height="40" fill="#ecfdf5" stroke="#a7f3d0" rx="3" />
+    <text x="395" y="326" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="bold" fill="#047857">Dedicated CLI Scripts</text>
+    <text x="395" y="340" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748b">import-dataset, clean-unrelated-db</text>
+
+    <!-- Storage & ML Box (Right Side) -->
+    <!-- Storage -->
+    <rect x="545" y="50" width="205" height="165" fill="#ffffff" stroke="#7c3aed" stroke-width="2" rx="4" />
+    <rect x="545" y="50" width="205" height="28" fill="#7c3aed" rx="4" />
+    <text x="647" y="69" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="bold" fill="#ffffff">PERSISTENCE TIER (MongoDB)</text>
+    <text x="647" y="93" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="8" fill="#475569">Atlas Cluster: ethereum_fraud_dev</text>
+    <rect x="560" y="105" width="175" height="25" fill="#f5f3ff" stroke="#ddd6fe" rx="3" />
+    <text x="647" y="121" text-anchor="middle" font-family="monospace" font-size="8" fill="#6d28d9">users (Credentials, Roles)</text>
+    <rect x="560" y="135" width="175" height="25" fill="#f5f3ff" stroke="#ddd6fe" rx="3" />
+    <text x="647" y="151" text-anchor="middle" font-family="monospace" font-size="8" fill="#6d28d9">sessions (SHA256, TTL 7d)</text>
+    <rect x="560" y="165" width="175" height="25" fill="#f5f3ff" stroke="#ddd6fe" rx="3" />
+    <text x="647" y="181" text-anchor="middle" font-family="monospace" font-size="8" fill="#6d28d9">ethereum_dataset (Kaggle)</text>
+
+    <!-- ML Service -->
+    <rect x="545" y="235" width="205" height="165" fill="#ffffff" stroke="#dc2626" stroke-width="2" rx="4" />
+    <rect x="545" y="235" width="205" height="28" fill="#dc2626" rx="4" />
+    <text x="647" y="254" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="bold" fill="#ffffff">ML INFERENCE TIER (FastAPI)</text>
+    <text x="647" y="278" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="8" fill="#475569">Python 3.13 / Uvicorn (Port 8000)</text>
+    <rect x="560" y="290" width="175" height="25" fill="#fef2f2" stroke="#fecaca" rx="3" />
+    <text x="647" y="306" text-anchor="middle" font-family="monospace" font-size="8" fill="#b91c1c">XGBoost Classifier v1.0.0</text>
+    <rect x="560" y="320" width="175" height="25" fill="#fef2f2" stroke="#fecaca" rx="3" />
+    <text x="647" y="336" text-anchor="middle" font-family="monospace" font-size="8" fill="#b91c1c">TreeSHAP Attribution Engine</text>
+    <rect x="560" y="350" width="175" height="25" fill="#fef2f2" stroke="#fecaca" rx="3" />
+    <text x="647" y="366" text-anchor="middle" font-family="monospace" font-size="8" fill="#b91c1c">RobustScaler Pipeline</text>
+
+    <!-- Connectors -->
+    <!-- Client to Gateway -->
+    <line x1="240" y1="180" x2="285" y2="180" stroke="#0284c7" stroke-width="2" stroke-dasharray="4" />
+    <polygon points="285,180 277,176 277,184" fill="#0284c7" />
+    <text x="262" y="172" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="bold" fill="#0284c7">HTTPS</text>
+
+    <!-- Gateway to MongoDB -->
+    <line x1="505" y1="130" x2="545" y2="130" stroke="#7c3aed" stroke-width="2" />
+    <polygon points="545,130 537,126 537,134" fill="#7c3aed" />
+    <text x="525" y="122" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="bold" fill="#7c3aed">Mongoose</text>
+
+    <!-- Gateway to ML -->
+    <line x1="505" y1="315" x2="545" y2="315" stroke="#dc2626" stroke-width="2" />
+    <polygon points="545,315 537,311 537,319" fill="#dc2626" />
+    <text x="525" y="307" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="bold" fill="#dc2626">REST/JSON</text>
+  </svg>
+  <div class="diagram-caption">Figure 1.1: Distributed Physical and Logical Architecture Overview</div>
+</div>
+
+<!-- ================= UML DIAGRAMS SUITE ================= -->
+<div class="page-break"></div>
+
+<h2>2. Unified Modeling Language (UML) Diagrams</h2>
+
+<p>
+  This section presents the formal object-oriented and behavioral diagrams illustrating the software classes, relational data schemas, and runtime interaction workflows across the system.
+</p>
+
+<h3>2.1 UML Class Diagram (Backend Domain &amp; Service Architecture)</h3>
+<p>
+  The class diagram models the encapsulation of database entities, service providers, security middleware, and controller handlers.
+</p>
+
+<div class="diagram-container">
+  <!-- SVG UML Class Diagram -->
+  <svg viewBox="0 0 780 430" width="100%" height="430" xmlns="http://www.w3.org/2000/svg">
+    <rect width="780" height="430" fill="#ffffff" stroke="#cbd5e1" rx="4" />
+    <text x="390" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="bold" fill="#0f172a">FIGURE 2.1: UML CLASS DIAGRAM — DOMAIN MODELS &amp; SERVICE ORCHESTRATION</text>
+
+    <!-- User Class Box -->
+    <g transform="translate(30, 45)">
+      <rect width="180" height="150" fill="#f8fafc" stroke="#334155" stroke-width="1.5" />
+      <rect width="180" height="24" fill="#e2e8f0" stroke="#334155" stroke-width="1.5" />
+      <text x="90" y="16" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="9" fill="#0f172a">&lt;&lt;Mongoose Model&gt;&gt; User</text>
+      <text x="8" y="40" font-family="monospace" font-size="7.5" fill="#1e293b">- _id: ObjectId</text>
+      <text x="8" y="54" font-family="monospace" font-size="7.5" fill="#1e293b">- name: string</text>
+      <text x="8" y="68" font-family="monospace" font-size="7.5" fill="#1e293b">- email: string (unique)</text>
+      <text x="8" y="82" font-family="monospace" font-size="7.5" fill="#1e293b">- passwordHash: string</text>
+      <text x="8" y="96" font-family="monospace" font-size="7.5" fill="#1e293b">- role: 'user'|'analyst'|'admin'</text>
+      <text x="8" y="110" font-family="monospace" font-size="7.5" fill="#1e293b">- createdAt: Date</text>
+      <line x1="0" y1="118" x2="180" y2="118" stroke="#cbd5e1" stroke-width="1" />
+      <text x="8" y="132" font-family="monospace" font-size="7.5" fill="#0369a1">+ toSafeUser(): SafeUser</text>
+      <text x="8" y="144" font-family="monospace" font-size="7.5" fill="#0369a1">+ comparePassword(pwd): bool</text>
+    </g>
+
+    <!-- Session Class Box -->
+    <g transform="translate(250, 45)">
+      <rect width="190" height="150" fill="#f8fafc" stroke="#334155" stroke-width="1.5" />
+      <rect width="190" height="24" fill="#e2e8f0" stroke="#334155" stroke-width="1.5" />
+      <text x="95" y="16" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="9" fill="#0f172a">&lt;&lt;Mongoose Model&gt;&gt; Session</text>
+      <text x="8" y="40" font-family="monospace" font-size="7.5" fill="#1e293b">- _id: ObjectId</text>
+      <text x="8" y="54" font-family="monospace" font-size="7.5" fill="#1e293b">- userId: ObjectId (FK)</text>
+      <text x="8" y="68" font-family="monospace" font-size="7.5" fill="#1e293b">- tokenHash: string (SHA256)</text>
+      <text x="8" y="82" font-family="monospace" font-size="7.5" fill="#1e293b">- familyId: UUID</text>
+      <text x="8" y="96" font-family="monospace" font-size="7.5" fill="#1e293b">- isRevoked: boolean</text>
+      <text x="8" y="110" font-family="monospace" font-size="7.5" fill="#1e293b">- expiresAt: Date (TTL index)</text>
+      <line x1="0" y1="118" x2="190" y2="118" stroke="#cbd5e1" stroke-width="1" />
+      <text x="8" y="132" font-family="monospace" font-size="7.5" fill="#0369a1">+ revokeFamily(): Promise&lt;void&gt;</text>
+      <text x="8" y="144" font-family="monospace" font-size="7.5" fill="#0369a1">+ isExpired(): boolean</text>
+    </g>
+
+    <!-- AuthService Class Box -->
+    <g transform="translate(480, 45)">
+      <rect width="270" height="150" fill="#f8fafc" stroke="#334155" stroke-width="1.5" />
+      <rect width="270" height="24" fill="#dcfce7" stroke="#334155" stroke-width="1.5" />
+      <text x="135" y="16" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="9" fill="#166534">AuthService</text>
+      <text x="8" y="40" font-family="monospace" font-size="7.5" fill="#1e293b">- tokenManager: TokenUtil</text>
+      <text x="8" y="54" font-family="monospace" font-size="7.5" fill="#1e293b">- passwordHasher: PasswordUtil</text>
+      <line x1="0" y1="65" x2="270" y2="65" stroke="#cbd5e1" stroke-width="1" />
+      <text x="8" y="80" font-family="monospace" font-size="7.5" fill="#047857">+ register(dto, meta): Promise&lt;AuthResult&gt;</text>
+      <text x="8" y="95" font-family="monospace" font-size="7.5" fill="#047857">+ login(credentials, meta): Promise&lt;AuthResult&gt;</text>
+      <text x="8" y="110" font-family="monospace" font-size="7.5" fill="#047857">+ rotateToken(refreshToken): Promise&lt;AuthResult&gt;</text>
+      <text x="8" y="125" font-family="monospace" font-size="7.5" fill="#047857">+ logout(refreshToken): Promise&lt;void&gt;</text>
+      <text x="8" y="140" font-family="monospace" font-size="7.5" fill="#047857">+ getProfile(userId): Promise&lt;SafeUser&gt;</text>
+    </g>
+
+    <!-- Investigation Class Box -->
+    <g transform="translate(30, 230)">
+      <rect width="210" height="170" fill="#f8fafc" stroke="#334155" stroke-width="1.5" />
+      <rect width="210" height="24" fill="#e2e8f0" stroke="#334155" stroke-width="1.5" />
+      <text x="105" y="16" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="9" fill="#0f172a">&lt;&lt;Mongoose&gt;&gt; Investigation</text>
+      <text x="8" y="40" font-family="monospace" font-size="7.5" fill="#1e293b">- _id: ObjectId</text>
+      <text x="8" y="54" font-family="monospace" font-size="7.5" fill="#1e293b">- targetAddress: string (hex)</text>
+      <text x="8" y="68" font-family="monospace" font-size="7.5" fill="#1e293b">- riskScore: number (0-100)</text>
+      <text x="8" y="82" font-family="monospace" font-size="7.5" fill="#1e293b">- riskTier: 'LOW'|'MED'|'HIGH'|'CRIT'</text>
+      <text x="8" y="96" font-family="monospace" font-size="7.5" fill="#1e293b">- classification: 'LEGIT'|'ILLICIT'</text>
+      <text x="8" y="110" font-family="monospace" font-size="7.5" fill="#1e293b">- keyDrivers: string[] (SHAP)</text>
+      <text x="8" y="124" font-family="monospace" font-size="7.5" fill="#1e293b">- investigatorId: ObjectId (FK)</text>
+      <text x="8" y="138" font-family="monospace" font-size="7.5" fill="#1e293b">- status: 'OPEN'|'REVIEW'|'RESOLVED'</text>
+      <text x="8" y="152" font-family="monospace" font-size="7.5" fill="#1e293b">- notes: string (max 2000)</text>
+      <line x1="0" y1="158" x2="210" y2="158" stroke="#cbd5e1" stroke-width="1" />
+      <text x="8" y="166" font-family="monospace" font-size="7" fill="#0369a1">+ toDossierExport(): CaseReport</text>
+    </g>
+
+    <!-- EthereumDatasetRecord Class Box -->
+    <g transform="translate(280, 230)">
+      <rect width="220" height="170" fill="#f8fafc" stroke="#334155" stroke-width="1.5" />
+      <rect width="220" height="24" fill="#e2e8f0" stroke="#334155" stroke-width="1.5" />
+      <text x="110" y="16" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="9" fill="#0f172a">&lt;&lt;Mongoose&gt;&gt; EthereumDatasetRecord</text>
+      <text x="8" y="40" font-family="monospace" font-size="7.5" fill="#1e293b">- _id: ObjectId</text>
+      <text x="8" y="54" font-family="monospace" font-size="7.5" fill="#1e293b">- rawRowId: mixed (Index)</text>
+      <text x="8" y="68" font-family="monospace" font-size="7.5" fill="#1e293b">- address: string (0x...)</text>
+      <text x="8" y="82" font-family="monospace" font-size="7.5" fill="#1e293b">- flag: number (0=Benign, 1=Fraud)</text>
+      <text x="8" y="96" font-family="monospace" font-size="7.5" fill="#1e293b">- features: Map&lt;string, number&gt;</text>
+      <text x="8" y="110" font-family="monospace" font-size="7.5" fill="#1e293b">- datasetSource: 'kaggle-vagifa'</text>
+      <text x="8" y="124" font-family="monospace" font-size="7.5" fill="#1e293b">- importedAt: Date</text>
+      <line x1="0" y1="135" x2="220" y2="135" stroke="#cbd5e1" stroke-width="1" />
+      <text x="8" y="152" font-family="monospace" font-size="7.5" fill="#0369a1">+ validateFeatureSchema(): bool</text>
+      <text x="8" y="166" font-family="monospace" font-size="7.5" fill="#0369a1">+ toTrainingVector(): float[]</text>
+    </g>
+
+    <!-- DatabaseManager Class Box -->
+    <g transform="translate(540, 230)">
+      <rect width="210" height="170" fill="#f8fafc" stroke="#334155" stroke-width="1.5" />
+      <rect width="210" height="24" fill="#ede9fe" stroke="#334155" stroke-width="1.5" />
+      <text x="105" y="16" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="9" fill="#5b21b6">DatabaseManager</text>
+      <text x="8" y="40" font-family="monospace" font-size="7.5" fill="#1e293b">- isConnecting: boolean</text>
+      <text x="8" y="54" font-family="monospace" font-size="7.5" fill="#1e293b">- mongooseInstance: Mongoose</text>
+      <line x1="0" y1="65" x2="210" y2="65" stroke="#cbd5e1" stroke-width="1" />
+      <text x="8" y="82" font-family="monospace" font-size="7.5" fill="#6d28d9">+ connect(): Promise&lt;boolean&gt;</text>
+      <text x="8" y="98" font-family="monospace" font-size="7.5" fill="#6d28d9">+ disconnect(): Promise&lt;void&gt;</text>
+      <text x="8" y="114" font-family="monospace" font-size="7.5" fill="#6d28d9">+ getStatus(): DbStatus</text>
+      <text x="8" y="130" font-family="monospace" font-size="7.5" fill="#6d28d9">- setupEventListeners(): void</text>
+      <text x="8" y="146" font-family="monospace" font-size="7.5" fill="#6d28d9">- sanitizeUri(uri): string</text>
+    </g>
+
+    <!-- Connectors -->
+    <!-- User to Session (1 to N) -->
+    <line x1="210" y1="110" x2="250" y2="110" stroke="#0f172a" stroke-width="1.5" />
+    <text x="214" y="103" font-size="8" font-family="monospace">1</text>
+    <text x="240" y="103" font-size="8" font-family="monospace">*</text>
+
+    <!-- User to Investigation (1 to N) -->
+    <line x1="120" y1="195" x2="120" y2="230" stroke="#0f172a" stroke-width="1.5" />
+    <text x="124" y="206" font-size="8" font-family="monospace">1</text>
+    <text x="124" y="224" font-size="8" font-family="monospace">*</text>
+
+    <!-- AuthService relies on User and Session -->
+    <path d="M 480 120 L 440 120" stroke="#047857" stroke-width="1" stroke-dasharray="3" />
+    <polygon points="440,120 446,117 446,123" fill="#047857" />
+  </svg>
+  <div class="diagram-caption">Figure 2.1: Domain Schema &amp; Object-Oriented Service Architecture</div>
+</div>
+
+<h3>2.2 UML Sequence Diagram (Analyst Authentication &amp; Token Rotation)</h3>
+<p>
+  This interaction sequence models the cryptographically secure JWT lifecycle: storing access tokens strictly in browser memory, issuing rotating HttpOnly refresh cookies, and revoking entire token families upon detecting replay attacks.
+</p>
+
+<div class="diagram-container">
+  <!-- SVG UML Sequence Diagram 1 -->
+  <svg viewBox="0 0 780 340" width="100%" height="340" xmlns="http://www.w3.org/2000/svg">
+    <rect width="780" height="340" fill="#f8fafc" rx="4" />
+    <text x="390" y="22" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="bold" fill="#0f172a">FIGURE 2.2: SEQUENCE DIAGRAM — AUTHENTICATION &amp; TOKEN REUSE DETECTION</text>
+
+    <!-- Lifelines -->
+    <g transform="translate(40, 40)">
+      <rect x="0" y="0" width="100" height="24" fill="#0284c7" rx="3" />
+      <text x="50" y="16" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">Analyst Browser</text>
+      <line x1="50" y1="24" x2="50" y2="280" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4" />
+    </g>
+
+    <g transform="translate(230, 40)">
+      <rect x="0" y="0" width="110" height="24" fill="#059669" rx="3" />
+      <text x="55" y="16" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">Express API Gateway</text>
+      <line x1="55" y1="24" x2="55" y2="280" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4" />
+    </g>
+
+    <g transform="translate(440, 40)">
+      <rect x="0" y="0" width="100" height="24" fill="#d97706" rx="3" />
+      <text x="50" y="16" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">AuthService</text>
+      <line x1="50" y1="24" x2="50" y2="280" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4" />
+    </g>
+
+    <g transform="translate(630, 40)">
+      <rect x="0" y="0" width="110" height="24" fill="#7c3aed" rx="3" />
+      <text x="55" y="16" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">MongoDB Atlas</text>
+      <line x1="55" y1="24" x2="55" y2="280" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4" />
+    </g>
+
+    <!-- Messages -->
+    <!-- 1. POST /login -->
+    <line x1="90" y1="85" x2="285" y2="85" stroke="#0284c7" stroke-width="1.5" />
+    <polygon points="285,85 277,81 277,89" fill="#0284c7" />
+    <text x="187" y="78" text-anchor="middle" font-family="monospace" font-size="7.5" fill="#0284c7">1: POST /auth/login (email, password)</text>
+
+    <!-- 2. Validate & find user -->
+    <line x1="285" y1="105" x2="490" y2="105" stroke="#059669" stroke-width="1.5" />
+    <polygon points="490,105 482,101 482,109" fill="#059669" />
+    <text x="387" y="98" text-anchor="middle" font-family="monospace" font-size="7.5" fill="#059669">2: login(credentials)</text>
+
+    <!-- 3. Query User -->
+    <line x1="490" y1="125" x2="685" y2="125" stroke="#7c3aed" stroke-width="1.5" />
+    <polygon points="685,125 677,121 677,129" fill="#7c3aed" />
+    <text x="587" y="118" text-anchor="middle" font-family="monospace" font-size="7.5" fill="#7c3aed">3: findOne({ email })</text>
+
+    <!-- 4. Save Session -->
+    <line x1="490" y1="150" x2="685" y2="150" stroke="#7c3aed" stroke-width="1.5" />
+    <polygon points="685,150 677,146 677,154" fill="#7c3aed" />
+    <text x="587" y="143" text-anchor="middle" font-family="monospace" font-size="7.5" fill="#7c3aed">4: Session.create(hash, familyId, TTL 7d)</text>
+
+    <!-- 5. Return Tokens -->
+    <line x1="490" y1="175" x2="285" y2="175" stroke="#059669" stroke-width="1.5" stroke-dasharray="3" />
+    <polygon points="285,175 293,171 293,179" fill="#059669" />
+    <text x="387" y="168" text-anchor="middle" font-family="monospace" font-size="7.5" fill="#059669">5: Return (accessToken, refreshToken)</text>
+
+    <!-- 6. Response with Set-Cookie -->
+    <line x1="285" y1="200" x2="90" y2="200" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="3" />
+    <polygon points="90,200 98,196 98,204" fill="#0284c7" />
+    <text x="187" y="193" text-anchor="middle" font-family="monospace" font-size="7.5" fill="#0284c7">6: 200 OK + Set-Cookie(HttpOnly) + Bearer Token</text>
+
+    <!-- 7. Rotation Flow -->
+    <line x1="90" y1="230" x2="285" y2="230" stroke="#b45309" stroke-width="1.5" />
+    <polygon points="285,230 277,226 277,234" fill="#b45309" />
+    <text x="187" y="223" text-anchor="middle" font-family="monospace" font-size="7.5" fill="#b45309">7: POST /auth/refresh (Cookie passed)</text>
+
+    <!-- 8. Rotate in DB -->
+    <line x1="285" y1="250" x2="685" y2="250" stroke="#7c3aed" stroke-width="1.5" />
+    <polygon points="685,250 677,246 677,254" fill="#7c3aed" />
+    <text x="485" y="243" text-anchor="middle" font-family="monospace" font-size="7.5" fill="#7c3aed">8: Invalidate old tokenHash, generate new child in familyId</text>
+
+    <!-- 9. Return New Pair -->
+    <line x1="285" y1="280" x2="90" y2="280" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="3" />
+    <polygon points="90,280 98,276 98,284" fill="#0284c7" />
+    <text x="187" y="273" text-anchor="middle" font-family="monospace" font-size="7.5" fill="#0284c7">9: 200 OK + Rotated Access Token in RAM</text>
+  </svg>
+  <div class="diagram-caption">Figure 2.2: Sequence Diagram of Authentication, Token Rotation, and Replay Defense</div>
+</div>
+
+<!-- ================= MODULE HIERARCHY ================= -->
+<div class="page-break"></div>
+
+<h2>3. Module Hierarchy & System Decomposition</h2>
+
+<p>
+  The monorepo structure is cleanly decoupled into four core subsystems:
+</p>
+
+<div class="win95-window">
+  <div class="win95-titlebar">
+    <span>C:\ETH_FRAUD\WORKSPACE_EXPLORER.EXE</span>
+    <span class="win95-titlebar-btn">X</span>
+  </div>
+  <div class="win95-client">
+    <div class="win95-sunken" style="font-family: monospace; font-size: 8pt; line-height: 1.45;">
+<strong>ethereum-fraud-detection/</strong><br>
+├── <strong>client/</strong> [Frontend Single Page Application — React 18, Vite, TypeScript]<br>
+│   ├── <code>src/styles/retro-theme.css</code> ............ Custom 1995 2-stage bevels, MS Sans Serif fonts, 4 color schemes<br>
+│   ├── <code>src/utils/feedback.ts</code> ............... In-memory Web Audio API oscillator synthesis (clicks, bonks, chimes)<br>
+│   ├── <code>src/lib/axios.ts</code> .................... Robust API client with auto-normalizing URL resolvers and single-flight refresh<br>
+│   ├── <code>src/context/AuthContext.tsx</code> .......... React context managing reactive authentication state in RAM<br>
+│   ├── <strong>src/components/retro/</strong> ................ Reusable vintage UI design system components<br>
+│   │   ├── <code>RetroWindow.tsx</code> ................. Draggable, minimizable, maximizable retro window container<br>
+│   │   ├── <code>RetroButton.tsx</code> ................. Authentic 3D beveled button with pressed depression physics<br>
+│   │   ├── <code>RetroInput.tsx</code> .................. Inset sunken text box with custom focus caret<br>
+│   │   ├── <code>RetroTabs.tsx</code> ................... Classic Windows 95 tabbed property sheet component<br>
+│   │   ├── <code>RetroStatusBar.tsx</code> .............. Bottom multi-panel sunken status bar with clock &amp; metrics<br>
+│   │   └── <code>RetroIcons.tsx</code> .................. Pixelated 16x16 / 32x32 SVG vintage system icons<br>
+│   ├── <strong>src/components/desktop/</strong> .............. FraudOS 95 complete operating system shell<br>
+│   │   ├── <code>DesktopShell.tsx</code> ................ Desktop teal workspace container &amp; global window manager state<br>
+│   │   ├── <code>Taskbar.tsx</code> ..................... Bottom bar with Start button, running window tabs, system tray<br>
+│   │   ├── <code>StartMenu.tsx</code> .................. Cascading 95 Start popup with quick program shortcuts<br>
+│   │   ├── <code>FraudScannerWindow.tsx</code> .......... Address input, pre-validation checks, benchmark test cases<br>
+│   │   ├── <code>ModelStatusWindow.tsx</code> ........... Real-time service readiness probes and XGBoost telemetry<br>
+│   │   ├── <code>WalletExplorerWindow.tsx</code> ....... 45-feature schema property sheet, pipeline phases, and storage breakdown<br>
+│   │   ├── <code>InvestigationHistoryWindow.tsx</code> .. Forensic case dossier repository with status filtering<br>
+│   │   └── <code>SettingsWindow.tsx</code> ............... Theme switcher (Teal, Cobalt, Matrix, Charcoal) &amp; sound toggles<br>
+│   └── <strong>src/pages/</strong> ........................... Full-screen entry points<br>
+│       ├── <code>LoginPage.tsx</code> ................... Classic Network Log On dialog<br>
+│       ├── <code>RegisterPage.tsx</code> ................ New Analyst Account Provisioning dialog with live password strength meter<br>
+│       └── <code>NotFoundPage.tsx</code> ................ Vintage system error dialog for unmapped routes<br>
+├── <strong>server/</strong> [Backend Gateway &amp; Orchestration — Node.js, Express, TypeScript]<br>
+│   ├── <code>src/index.ts</code> ........................ Server entry point, port binding, and graceful shutdown handlers<br>
+│   ├── <code>src/app.ts</code> .......................... Express application setup, Helmet headers, CORS policies, rate limiters<br>
+│   ├── <strong>src/config/</strong><br>
+│   │   ├── <code>database.ts</code> .................... Mongoose connection manager with strict <code>dbName</code> scoping<br>
+│   │   ├── <code>env.ts</code> ......................... Zod schema runtime configuration validator with fallback guards<br>
+│   │   └── <code>logger.ts</code> ...................... High-performance Pino logger with automated credential masking<br>
+│   ├── <strong>src/models/</strong> .......................... Mongoose ODM isolated document schemas<br>
+│   │   ├── <code>User.ts</code> ........................ Analyst identities with bcrypt hashes and safe JSON transforms<br>
+│   │   ├── <code>Session.ts</code> ..................... Refresh token families with SHA-256 hashes and 7-day TTL expiration<br>
+│   │   ├── <code>EthereumDatasetRecord.ts</code> ........ Isolated historical Kaggle training dataset repository<br>
+│   │   └── <code>Investigation.ts</code> ................ Forensic analysis dossiers, risk tiers, and case notes<br>
+│   ├── <strong>src/routes/</strong> .......................... Route definitions with multi-prefix fallback aliasing (/api/v1, /api, /)<br>
+│   │   ├── <code>auth.routes.ts</code> .................. /register, /login, /refresh, /logout, /me<br>
+│   │   └── <code>health.routes.ts</code> ................ /health (liveness), /ready (database readiness)<br>
+│   ├── <strong>src/scripts/</strong> ......................... Production-grade operational CLI utilities<br>
+│   │   ├── <code>import-ethereum-dataset.ts</code> ...... Streaming CSV parser with schema validation &amp; batch insertion<br>
+│   │   └── <code>clean-unrelated-data.ts</code> ......... Guarded database cleanup utility with dry-run and blacklist protection<br>
+│   └── <strong>tests/</strong> ............................... Vitest automated integration test suite (24/24 passing)<br>
+├── <strong>ml-service/</strong> [Machine Learning Microservice — Python 3.13, FastAPI, XGBoost, TreeSHAP]<br>
+│   ├── <code>src/data_loader.py</code> ................. CSV loading, whitespace header sanitization, target validation<br>
+│   ├── <code>src/preprocessor.py</code> ................ Median imputer, zero-variance filter, RobustScaler pipeline<br>
+│   ├── <code>src/model_trainer.py</code> ............... Model training across Dummy, Logistic, Random Forest, XGBoost<br>
+│   ├── <code>src/explainer.py</code> .................... Local and global TreeSHAP computation engine<br>
+│   ├── <strong>artifacts/</strong> ........................... Serialized binary model weights and evaluation metadata<br>
+│   │   ├── <code>ethereum_fraud_model_v1.joblib</code> .. Trained champion XGBoost model artifact<br>
+│   │   └── <code>model_metadata.json</code> ............ Complete benchmark metrics, SHAP values, and training hyperparameters<br>
+│   └── <strong>tests/</strong> ............................... Pytest automated unit tests (12/12 passing)<br>
+└── <strong>package.json</strong> ............................. Root monorepo workspace orchestration with concurrent commands
+    </div>
+  </div>
+</div>
+
+<!-- ================= ENTITY RELATIONSHIP & DB DESIGN ================= -->
+<div class="page-break"></div>
+
+<h2>4. Entity-Relationship (ER) Diagram & Database Design</h2>
+
+<p>
+  The database architecture is deployed on a dedicated <strong>MongoDB Atlas</strong> cloud cluster using <strong>Mongoose ODM</strong>. To prevent accidental data contamination, our design enforces:
+</p>
+
+<ul>
+  <li><strong>Strict Database Scoping:</strong> All Mongoose models explicitly bind to <code>dbName: ethereum_fraud_dev</code>. The application is strictly isolated from any external sample collections (such as Atlas's default <code>sample_mflix</code>).</li>
+  <li><strong>Independent Collection Lifecycles:</strong> Historical labeled dataset records, user authentication credentials, and actual forensic investigation dossiers are segregated into four separate collections.</li>
+  <li><strong>Zero Startup Auto-Seeding:</strong> Normal server initialization performs zero write operations. All data ingestion requires explicit operator execution.</li>
+</ul>
+
+<div class="diagram-container">
+  <!-- SVG Entity Relationship Diagram -->
+  <svg viewBox="0 0 780 430" width="100%" height="430" xmlns="http://www.w3.org/2000/svg">
+    <rect width="780" height="430" fill="#ffffff" stroke="#cbd5e1" rx="4" />
+    <text x="390" y="24" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="bold" fill="#0f172a">FIGURE 4.1: ENTITY-RELATIONSHIP (ER) DIAGRAM &amp; MONGODB SCHEMA CARDINALITY</text>
+
+    <!-- USER Entity -->
+    <g transform="translate(30, 50)">
+      <rect width="210" height="150" fill="#f8fafc" stroke="#0284c7" stroke-width="1.5" rx="3" />
+      <rect width="210" height="24" fill="#0284c7" rx="3" />
+      <text x="105" y="16" text-anchor="middle" font-family="monospace" font-size="9" font-weight="bold" fill="#ffffff">users (Collection)</text>
+      <text x="8" y="40" font-family="monospace" font-size="7.5" fill="#0f172a">PK  _id: ObjectId</text>
+      <text x="8" y="55" font-family="monospace" font-size="7.5" fill="#475569">    name: String (trim, 2-100)</text>
+      <text x="8" y="70" font-family="monospace" font-size="7.5" fill="#0369a1">UQ  email: String (trim, lowercase)</text>
+      <text x="8" y="85" font-family="monospace" font-size="7.5" fill="#475569">    passwordHash: String (bcrypt)</text>
+      <text x="8" y="100" font-family="monospace" font-size="7.5" fill="#475569">    role: Enum ['user','analyst','admin']</text>
+      <text x="8" y="115" font-family="monospace" font-size="7.5" fill="#475569">    createdAt: Date</text>
+      <text x="8" y="130" font-family="monospace" font-size="7.5" fill="#475569">    updatedAt: Date</text>
+    </g>
+
+    <!-- SESSION Entity -->
+    <g transform="translate(300, 50)">
+      <rect width="220" height="150" fill="#f8fafc" stroke="#059669" stroke-width="1.5" rx="3" />
+      <rect width="220" height="24" fill="#059669" rx="3" />
+      <text x="110" y="16" text-anchor="middle" font-family="monospace" font-size="9" font-weight="bold" fill="#ffffff">sessions (Collection)</text>
+      <text x="8" y="40" font-family="monospace" font-size="7.5" fill="#0f172a">PK  _id: ObjectId</text>
+      <text x="8" y="55" font-family="monospace" font-size="7.5" fill="#b45309">FK  userId: ObjectId &gt;&gt; users._id</text>
+      <text x="8" y="70" font-family="monospace" font-size="7.5" fill="#0369a1">UQ  tokenHash: String (SHA-256)</text>
+      <text x="8" y="85" font-family="monospace" font-size="7.5" fill="#475569">IX  familyId: String (UUID v4)</text>
+      <text x="8" y="100" font-family="monospace" font-size="7.5" fill="#475569">    isRevoked: Boolean</text>
+      <text x="8" y="115" font-family="monospace" font-size="7.5" fill="#475569">    userAgent, ipAddress: String</text>
+      <text x="8" y="130" font-family="monospace" font-size="7.5" fill="#dc2626">TTL expiresAt: Date (expireAfter: 0)</text>
+    </g>
+
+    <!-- INVESTIGATION Entity -->
+    <g transform="translate(30, 240)">
+      <rect width="230" height="165" fill="#f8fafc" stroke="#d97706" stroke-width="1.5" rx="3" />
+      <rect width="230" height="24" fill="#d97706" rx="3" />
+      <text x="115" y="16" text-anchor="middle" font-family="monospace" font-size="9" font-weight="bold" fill="#ffffff">investigations (Collection)</text>
+      <text x="8" y="40" font-family="monospace" font-size="7.5" fill="#0f172a">PK  _id: ObjectId</text>
+      <text x="8" y="55" font-family="monospace" font-size="7.5" fill="#0369a1">IX  targetAddress: String (0x...)</text>
+      <text x="8" y="70" font-family="monospace" font-size="7.5" fill="#475569">    riskScore: Number (0 - 100)</text>
+      <text x="8" y="85" font-family="monospace" font-size="7.5" fill="#475569">IX  riskTier: 'LOW'|'MED'|'HIGH'|'CRIT'</text>
+      <text x="8" y="100" font-family="monospace" font-size="7.5" fill="#475569">    classification: 'LEGIT'|'ILLICIT'</text>
+      <text x="8" y="115" font-family="monospace" font-size="7.5" fill="#475569">    keyDrivers: String[] (Top SHAP)</text>
+      <text x="8" y="130" font-family="monospace" font-size="7.5" fill="#b45309">FK  investigatorId: ObjectId &gt;&gt; users._id</text>
+      <text x="8" y="145" font-family="monospace" font-size="7.5" fill="#475569">    status: 'OPEN'|'REVIEW'|'RESOLVED'</text>
+    </g>
+
+    <!-- ETHEREUM DATASET RECORD Entity -->
+    <g transform="translate(320, 240)">
+      <rect width="220" height="165" fill="#f8fafc" stroke="#7c3aed" stroke-width="1.5" rx="3" />
+      <rect width="220" height="24" fill="#7c3aed" rx="3" />
+      <text x="110" y="16" text-anchor="middle" font-family="monospace" font-size="9" font-weight="bold" fill="#ffffff">ethereum_dataset (Collection)</text>
+      <text x="8" y="40" font-family="monospace" font-size="7.5" fill="#0f172a">PK  _id: ObjectId</text>
+      <text x="8" y="55" font-family="monospace" font-size="7.5" fill="#0369a1">IX  rawRowId: Mixed (Original CSV Row)</text>
+      <text x="8" y="70" font-family="monospace" font-size="7.5" fill="#0369a1">IX  address: String (0x...)</text>
+      <text x="8" y="85" font-family="monospace" font-size="7.5" fill="#dc2626">IX  flag: Number [0=Benign, 1=Fraud]</text>
+      <text x="8" y="100" font-family="monospace" font-size="7.5" fill="#475569">    features: Object (45-51 Features)</text>
+      <text x="8" y="115" font-family="monospace" font-size="7.5" fill="#475569">    datasetSource: 'kaggle-vagifa'</text>
+      <text x="8" y="130" font-family="monospace" font-size="7.5" fill="#475569">    importedAt: Date</text>
+    </g>
+
+    <!-- Legend & Safety Box -->
+    <g transform="translate(560, 50)">
+      <rect width="190" height="355" fill="#f8fafc" stroke="#64748b" stroke-width="1" rx="3" />
+      <text x="95" y="20" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="bold" fill="#334155">INDEXES &amp; CONSTRAINTS</text>
+      <text x="10" y="45" font-family="monospace" font-size="7.5" fill="#0f172a">PK: Primary Key (_id)</text>
+      <text x="10" y="60" font-family="monospace" font-size="7.5" fill="#0369a1">UQ: Unique Index</text>
+      <text x="10" y="75" font-family="monospace" font-size="7.5" fill="#b45309">FK: Foreign Key Reference</text>
+      <text x="10" y="90" font-family="monospace" font-size="7.5" fill="#475569">IX: Secondary B-Tree Index</text>
+      <text x="10" y="105" font-family="monospace" font-size="7.5" fill="#dc2626">TTL: Automatic Expiry Index</text>
+      <line x1="10" y1="120" x2="180" y2="120" stroke="#cbd5e1" />
+      <text x="95" y="140" text-anchor="middle" font-family="sans-serif" font-size="8.5" font-weight="bold" fill="#0369a1">DATABASE SAFETY</text>
+      <text x="10" y="160" font-family="sans-serif" font-size="7.5" fill="#334155">• Scoped: ethereum_fraud_dev</text>
+      <text x="10" y="180" font-family="sans-serif" font-size="7.5" fill="#334155">• 0 Auto-seeding on boot</text>
+      <text x="10" y="200" font-family="sans-serif" font-size="7.5" fill="#334155">• Isolated Kaggle pipeline</text>
+      <text x="10" y="220" font-family="sans-serif" font-size="7.5" fill="#334155">• Drop blacklist protected:</text>
+      <text x="20" y="235" font-family="monospace" font-size="7" fill="#dc2626">ethereum_fraud_dev</text>
+      <text x="20" y="250" font-family="monospace" font-size="7" fill="#dc2626">admin, local, config</text>
+    </g>
+
+    <!-- Cardinality Lines -->
+    <!-- User to Session (1 to N) -->
+    <path d="M 240 110 L 300 110" stroke="#0284c7" stroke-width="2" />
+    <circle cx="245" cy="110" r="3" fill="#0284c7" />
+    <path d="M 292 105 L 300 110 L 292 115" stroke="#0284c7" stroke-width="1.5" fill="none" />
+
+    <!-- User to Investigation (1 to N) -->
+    <path d="M 135 200 L 135 240" stroke="#d97706" stroke-width="2" />
+    <circle cx="135" cy="205" r="3" fill="#d97706" />
+    <path d="M 130 232 L 135 240 L 140 232" stroke="#d97706" stroke-width="1.5" fill="none" />
+  </svg>
+  <div class="diagram-caption">Figure 4.1: Database Schemas, Index Configurations, and Relational Foreign Keys</div>
+</div>
+
+<!-- ================= DATA DICTIONARY ================= -->
+<div class="page-break"></div>
+
+<h2>5. Comprehensive Data Dictionary</h2>
+
+<p>
+  This section details the field definitions, data types, physical constraints, and domain interpretations for both application system collections and the 51 features extracted from the Kaggle Ethereum Transaction Fraud Dataset.
+</p>
+
+<h3>5.1 Core Application Collections Dictionary</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 18%;">Field Name</th>
+      <th style="width: 14%;">Data Type</th>
+      <th style="width: 15%;">Collection</th>
+      <th style="width: 15%;">Constraints</th>
+      <th>Description &amp; Security / Behavioral Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>users._id</code></td>
+      <td>ObjectId</td>
+      <td>users</td>
+      <td>PK, Auto-generated</td>
+      <td>Unique immutable identifier for investigator identity.</td>
+    </tr>
+    <tr>
+      <td><code>users.email</code></td>
+      <td>String</td>
+      <td>users</td>
+      <td>Unique, Lowercase</td>
+      <td>Corporate work email address used as login username.</td>
+    </tr>
+    <tr>
+      <td><code>users.passwordHash</code></td>
+      <td>String</td>
+      <td>users</td>
+      <td>Bcrypt (12 rounds)</td>
+      <td>One-way salted hash. Stripped from all JSON response outputs.</td>
+    </tr>
+    <tr>
+      <td><code>users.role</code></td>
+      <td>String</td>
+      <td>users</td>
+      <td>Enum ('user','analyst')</td>
+      <td>Role-based access clearance level for forensic features.</td>
+    </tr>
+    <tr>
+      <td><code>sessions.tokenHash</code></td>
+      <td>String</td>
+      <td>sessions</td>
+      <td>SHA-256 Hex, Unique</td>
+      <td>Cryptographic hash of the current HttpOnly refresh token string.</td>
+    </tr>
+    <tr>
+      <td><code>sessions.familyId</code></td>
+      <td>String</td>
+      <td>sessions</td>
+      <td>UUID v4, Indexed</td>
+      <td>Token family group ID used for automatic replay/reuse compromise detection.</td>
+    </tr>
+    <tr>
+      <td><code>sessions.expiresAt</code></td>
+      <td>Date</td>
+      <td>sessions</td>
+      <td>TTL Index (7 days)</td>
+      <td>Automatic background pruning date managed directly by MongoDB engine.</td>
+    </tr>
+    <tr>
+      <td><code>investigations.targetAddress</code></td>
+      <td>String</td>
+      <td>investigations</td>
+      <td>42-char Hex, Indexed</td>
+      <td>Normalized Ethereum wallet address subject to fraud assessment.</td>
+    </tr>
+    <tr>
+      <td><code>investigations.riskScore</code></td>
+      <td>Number</td>
+      <td>investigations</td>
+      <td>Float [0.0 - 100.0]</td>
+      <td>Aggregated probability score produced by the XGBoost fraud pipeline.</td>
+    </tr>
+    <tr>
+      <td><code>investigations.riskTier</code></td>
+      <td>String</td>
+      <td>investigations</td>
+      <td>LOW | MED | HIGH | CRIT</td>
+      <td>Categorical triage risk classification for operational compliance teams.</td>
+    </tr>
+    <tr>
+      <td><code>investigations.keyDrivers</code></td>
+      <td>Array&lt;String&gt;</td>
+      <td>investigations</td>
+      <td>Top SHAP factors</td>
+      <td>Human-interpretable feature drivers explaining why address was flagged.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>5.2 Ethereum Kaggle Fraud Dataset Dictionary (All 51 Features)</h3>
+<p>
+  Source: <em>Kaggle: vagifa/ethereum-frauddetection-dataset</em> (9,841 addresses; 7,662 benign, 2,179 fraudulent).
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 28%;">Feature Column</th>
+      <th style="width: 12%;">Type / Unit</th>
+      <th style="width: 18%;">Feature Group</th>
+      <th>Forensic &amp; Fraud Significance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Index</code></td>
+      <td>Integer</td>
+      <td>Meta</td>
+      <td>Original row index in raw extraction.</td>
+    </tr>
+    <tr>
+      <td><code>Address</code></td>
+      <td>String (Hex)</td>
+      <td>Identifier</td>
+      <td>42-char Ethereum account address (excluded from model input to prevent memorization).</td>
+    </tr>
+    <tr>
+      <td><code>FLAG</code></td>
+      <td>Binary [0, 1]</td>
+      <td><strong>Target Label</strong></td>
+      <td><strong>0 = Benign/Legitimate Account; 1 = Confirmed Illicit/Fraudulent Account</strong>.</td>
+    </tr>
+    <tr>
+      <td><code>Avg min between sent tnx</code></td>
+      <td>Float (Minutes)</td>
+      <td>Temporal Pacing</td>
+      <td>Burner bot accounts send high volumes in fractions of minutes; legitimate accounts have diurnal pacing.</td>
+    </tr>
+    <tr>
+      <td><code>Avg min between received tnx</code></td>
+      <td>Float (Minutes)</td>
+      <td>Temporal Pacing</td>
+      <td>Average duration between incoming deposits. Sudden micro-intervals indicate batch funding.</td>
+    </tr>
+    <tr>
+      <td><code>Time Diff between first and last (Mins)</code></td>
+      <td>Float (Minutes)</td>
+      <td>Lifespan</td>
+      <td>Total account active lifespan. <strong>Top SHAP Driver:</strong> Scam addresses have ephemeral lifespans (&lt;48 hrs).</td>
+    </tr>
+    <tr>
+      <td><code>Sent tnx</code></td>
+      <td>Integer</td>
+      <td>Volume</td>
+      <td>Lifetime count of outgoing transactions initiated by address.</td>
+    </tr>
+    <tr>
+      <td><code>Received Tnx</code></td>
+      <td>Integer</td>
+      <td>Volume</td>
+      <td>Lifetime count of incoming transactions received. High ratio to sent indicates collection wallet.</td>
+    </tr>
+    <tr>
+      <td><code>Number of Created Contracts</code></td>
+      <td>Integer</td>
+      <td>Smart Contracts</td>
+      <td>Contracts deployed. Fraud rings frequently deploy self-destructing forwarding or honeypot contracts.</td>
+    </tr>
+    <tr>
+      <td><code>Unique Received From Addresses</code></td>
+      <td>Integer</td>
+      <td>Counterparties</td>
+      <td>Dispersion of deposit sources. Phishing wallets receive funds from hundreds of unique victims.</td>
+    </tr>
+    <tr>
+      <td><code>Unique Sent To Addresses</code></td>
+      <td>Integer</td>
+      <td>Counterparties</td>
+      <td>Dispersion of transfer destinations. Mixers and splitters disburse to vast distinct addresses.</td>
+    </tr>
+    <tr>
+      <td><code>min / max / avg val received</code></td>
+      <td>Float (ETH)</td>
+      <td>Value Dynamics</td>
+      <td>Minimum, maximum, and average Ether received per deposit.</td>
+    </tr>
+    <tr>
+      <td><code>min / max / avg val sent</code></td>
+      <td>Float (ETH)</td>
+      <td>Value Dynamics</td>
+      <td>Minimum, maximum, and average Ether sent per transfer. Zero or micro-values indicate dusting.</td>
+    </tr>
+    <tr>
+      <td><code>min / max / avg val sent to contract</code></td>
+      <td>Float (ETH)</td>
+      <td>Contract Calls</td>
+      <td>ETH transferred directly to smart contracts (DEX, bridge, or scam contracts).</td>
+    </tr>
+    <tr>
+      <td><code>total transactions (including create)</code></td>
+      <td>Integer</td>
+      <td>Activity Volume</td>
+      <td>Cumulative transaction count. High ratio with low lifespan is a prime indicator of bot farms.</td>
+    </tr>
+    <tr>
+      <td><code>total Ether sent / received</code></td>
+      <td>Float (ETH)</td>
+      <td>Turnover</td>
+      <td>Total lifetime ETH churn through the address. High parity indicates immediate liquidation.</td>
+    </tr>
+    <tr>
+      <td><code>total ether balance</code></td>
+      <td>Float (ETH)</td>
+      <td>Balance Snapshot</td>
+      <td>Closing balance. Fraudulent drainers typically maintain near-zero balances after rapid cash-out.</td>
+    </tr>
+    <tr>
+      <td><code>Total ERC20 tnxs</code></td>
+      <td>Float</td>
+      <td>ERC-20 Activity</td>
+      <td><strong>#1 Most Predictive SHAP Feature:</strong> Phishing drainers execute high-frequency ERC-20 token sweeps.</td>
+    </tr>
+    <tr>
+      <td><code>ERC20 total Ether received / sent</code></td>
+      <td>Float (ETH)</td>
+      <td>ERC-20 Volume</td>
+      <td>Cumulative nominal volume of ERC-20 token assets transferred.</td>
+    </tr>
+    <tr>
+      <td><code>ERC20 uniq sent / rec addr</code></td>
+      <td>Float</td>
+      <td>Token Counterparty</td>
+      <td>Count of unique addresses interacted with via token transfers.</td>
+    </tr>
+    <tr>
+      <td><code>ERC20 avg time between sent / rec tnx</code></td>
+      <td>Float (Minutes)</td>
+      <td>Token Pacing</td>
+      <td>Average cadence between token transfers. Automated bot sweepers exhibit sub-minute intervals.</td>
+    </tr>
+    <tr>
+      <td><code>ERC20 min / max / avg val sent &amp; rec</code></td>
+      <td>Float</td>
+      <td>Token Value</td>
+      <td>Extreme differences between min and max token value indicate token dumping or honeypot minting.</td>
+    </tr>
+    <tr>
+      <td><code>ERC20 uniq sent / rec token name</code></td>
+      <td>Float</td>
+      <td>Token Diversity</td>
+      <td>Diversity of token contract interactions. Drainers interact with hundreds of distinct token contracts.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ================= USER INTERFACE DESIGN ================= -->
+<div class="page-break"></div>
+
+<h2>6. User Interface (UI) Design — FraudOS 95 Retro Workstation</h2>
+
+<p>
+  Rather than adopting the ubiquitous, generic "AI SaaS" aesthetic (purple gradients, bloated whitespace, translucent glowing cards), the platform implements an intentional, nostalgic, and compact <strong>Windows 95 Retro Desktop Workstation (FraudOS 95)</strong>.
+</p>
+
+<h3>6.1 Design Principles &amp; Technical Implementation</h3>
+<ul>
+  <li><strong>2-Stage Outset / Inset Bevel Borders:</strong> Every window, button, and input element uses authentic 1990s border highlights (<code>#FFFFFF</code> top/left, <code>#808080</code> and <code>#000000</code> bottom/right) to simulate hardware-rendered GUI depth.</li>
+  <li><strong>MS Sans Serif Typography:</strong> Crisp 8pt to 11pt system typography with tight line spacing, maximizing on-screen data density for compliance analysts.</li>
+  <li><strong>Web Audio API Sound Synthesis:</strong> Zero audio assets. Pure mathematical audio synthesis (440Hz clicks, 220Hz/180Hz double error bonks, and ascending chord chimes) with optional toggle defaulting to OFF for accessibility.</li>
+  <li><strong>Dynamic Window Management:</strong> Native window manager supporting focus stacking, draggable title bars, taskbar tabs, minimize, maximize, and desktop shortcut icons.</li>
+</ul>
+
+<h3>6.2 Visual Interface Previews</h3>
+
+<div class="win95-window">
+  <div class="win95-titlebar">
+    <span>New Analyst Registration — FraudOS 95</span>
+    <span class="win95-titlebar-btn">X</span>
+  </div>
+  <div class="win95-client">
+    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+      <div style="font-size: 20px;">🔒</div>
+      <div>
+        <strong>Provision new investigator credentials for the Ethereum Risk Platform</strong><br>
+        <span style="color: #555;">Clearance: Analyst • Storage: MongoDB Atlas (ethereum_fraud_dev)</span>
+      </div>
+    </div>
+
+    <div class="win95-sunken" style="margin-bottom: 8px; background: #fff;">
+      <div class="grid-2">
+        <div>
+          <label style="font-size: 7.5pt; font-weight: bold;">Analyst Full Name:</label><br>
+          <div class="win95-sunken" style="padding: 2px 4px; font-family: monospace;">Julian Vance</div>
+        </div>
+        <div>
+          <label style="font-size: 7.5pt; font-weight: bold;">Analyst Work Email:</label><br>
+          <div class="win95-sunken" style="padding: 2px 4px; font-family: monospace;">julian.vance@fraud-intel.internal</div>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top: 6px;">
+        <div>
+          <label style="font-size: 7.5pt; font-weight: bold;">Password:</label><br>
+          <div class="win95-sunken" style="padding: 2px 4px; font-family: monospace;">••••••••••••</div>
+        </div>
+        <div>
+          <label style="font-size: 7.5pt; font-weight: bold;">Confirm Password:</label><br>
+          <div class="win95-sunken" style="padding: 2px 4px; font-family: monospace;">••••••••••••</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="win95-sunken" style="background: #f4f4f4; padding: 4px; font-size: 7.5pt; color: #15803d;">
+      ✓ 8+ Characters &nbsp;&nbsp;&nbsp; ✓ 1+ Uppercase &nbsp;&nbsp;&nbsp; ✓ 1+ Lowercase &nbsp;&nbsp;&nbsp; ✓ 1+ Number &nbsp;&nbsp;&nbsp; ✓ Special Symbol
+    </div>
+
+    <div style="text-align: right; margin-top: 8px;">
+      <span class="win95-btn win95-btn-pressed">Create Account</span>
+      <span class="win95-btn" style="margin-left: 6px;">Cancel</span>
+    </div>
+  </div>
+</div>
+
+<div class="win95-window">
+  <div class="win95-titlebar">
+    <span>Fraud Scanner &amp; Risk Intelligence v1.0 [Online]</span>
+    <span class="win95-titlebar-btn">X</span>
+  </div>
+  <div class="win95-client">
+    <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+      <span class="win95-btn">File</span>
+      <span class="win95-btn">Scan</span>
+      <span class="win95-btn">Database</span>
+      <span class="win95-btn">Help</span>
+    </div>
+
+    <div class="win95-sunken" style="padding: 6px; margin-bottom: 6px;">
+      <label style="font-weight: bold; font-size: 8pt;">Target Ethereum Address (0x...):</label>
+      <div style="display: flex; gap: 6px; margin-top: 4px;">
+        <div class="win95-sunken" style="flex: 1; padding: 3px; font-family: monospace; font-size: 8pt;">
+          0x002c2192b1b590e80e14a1e5cc2c7bb2a8459424
+        </div>
+        <span class="win95-btn win95-btn-pressed">Scan Target</span>
+        <span class="win95-btn">Clear</span>
+      </div>
+    </div>
+
+    <div class="win95-sunken" style="background: #ffffff; padding: 6px;">
+      <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #808080; padding-bottom: 4px;">
+        <span><strong>Triage Classification:</strong> <span style="color: #b91c1c; font-weight: bold;">CRITICAL RISK / ILLICIT DRAINER</span></span>
+        <span><strong>Inference Score:</strong> <span style="font-family: monospace; font-weight: bold; color: #b91c1c;">99.98%</span></span>
+      </div>
+      <div style="font-size: 7.5pt; margin-top: 4px; color: #334155;">
+        <strong>Primary TreeSHAP Behavioral Drivers:</strong><br>
+        1. <code>Time Diff between first and last</code>: &lt; 45 minutes (Burner wallet lifespan)<br>
+        2. <code>Avg min between sent tnx</code>: 0.42 mins (Automated bot draining pattern)<br>
+        3. <code>ERC20 token interaction velocity</code>: Rapid liquidation churn
+      </div>
+    </div>
+
+    <div style="margin-top: 6px; border: 1px solid; border-color: #808080 #fff #fff #808080; padding: 2px 4px; background: #e0e0e0; display: flex; justify-content: space-between; font-size: 7.5pt;">
+      <span>Status: Assessment complete (Row #1152 benchmark match)</span>
+      <span>Model: XGBoost v1.0.0 (Calibrated Threshold: 0.62)</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MACHINE LEARNING PIPELINE ================= -->
+<div class="page-break"></div>
+
+<h2>7. Machine Learning Engineering & Model Evaluation</h2>
+
+<p>
+  The machine learning service is engineered to resolve extreme class imbalance (22.14% fraud prevalence) and eliminate data leakage while delivering sub-second inference.
+</p>
+
+<h3>7.1 Data Leakage Prevention &amp; Stratification</h3>
+<ul>
+  <li><strong>Entity-Aware Splitting:</strong> The raw Ethereum dataset contains individual addresses with multiple transactions. Splitting randomly on rows causes duplicate addresses in train and test sets, artificially inflating accuracy (address memorization). Our pipeline splits strictly on unique entity accounts (70% Train, 15% Validation, 15% Test).</li>
+  <li><strong>Strict Isolation of Fit:</strong> Preprocessing transformers (<code>SimpleImputer</code>, <code>VarianceThreshold</code>, <code>RobustScaler</code>) fit exclusively on the training partition and transform validation/test partitions without peeking.</li>
+</ul>
+
+<h3>7.2 Model Benchmark Comparison</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Model Architecture</th>
+      <th>Train Time</th>
+      <th>ROC-AUC</th>
+      <th>PR-AUC</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>F1 Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Baseline Dummy Classifier</strong></td>
+      <td>0.17 s</td>
+      <td>0.5041</td>
+      <td>0.2231</td>
+      <td>0.2278</td>
+      <td>0.2355</td>
+      <td>0.2316</td>
+    </tr>
+    <tr>
+      <td><strong>Regularized Logistic Regression</strong></td>
+      <td>1.53 s</td>
+      <td>0.8220</td>
+      <td>0.5233</td>
+      <td>0.5219</td>
+      <td>0.6911</td>
+      <td>0.5947</td>
+    </tr>
+    <tr>
+      <td><strong>Random Forest (Balanced)</strong></td>
+      <td>0.51 s</td>
+      <td>0.9971</td>
+      <td>0.9920</td>
+      <td>0.9776</td>
+      <td>0.9358</td>
+      <td>0.9563</td>
+    </tr>
+    <tr style="background: #f0fdf4; font-weight: bold;">
+      <td><strong>XGBoost Classifier (Champion)</strong></td>
+      <td>2.57 s</td>
+      <td>0.9985</td>
+      <td>0.9955</td>
+      <td>0.9841</td>
+      <td>0.9450</td>
+      <td>0.9641</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="grid-4" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0;">
+  <div class="metric-card">
+    <div class="metric-value">0.9985</div>
+    <div class="metric-label">Test ROC-AUC</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">98.41%</div>
+    <div class="metric-label">Test Precision</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">94.50%</div>
+    <div class="metric-label">Test Recall</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">0.6200</div>
+    <div class="metric-label">Optimal Threshold</div>
+  </div>
+</div>
+
+<h3>7.3 Confusion Matrix &amp; Error Analysis (Held-out 1,479 Test Samples)</h3>
+<ul>
+  <li><strong>True Negatives (TN):</strong> 1,147 &nbsp;|&nbsp; <strong>False Positives (FP):</strong> 5 (Low false alarm rate of 0.43%)</li>
+  <li><strong>True Positives (TP):</strong> 309 &nbsp;|&nbsp; <strong>False Negatives (FN):</strong> 18 (94.50% fraud capture rate)</li>
+</ul>
+
+<h3>7.4 TreeSHAP Global Feature Importance Rankings</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 10%;">Rank</th>
+      <th style="width: 45%;">Feature Name</th>
+      <th style="width: 20%;">Mean |SHAP| Value</th>
+      <th>Behavioral Rationale</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><code>Total ERC20 tnxs</code></td>
+      <td><strong>3.52108</strong></td>
+      <td>Heavy token liquidation patterns distinguish drainers from cold wallets.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><code>Time Diff between first and last (Mins)</code></td>
+      <td><strong>1.37014</strong></td>
+      <td>Scam addresses exhibit ephemeral lifespans (&lt;48 hours) versus established users.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><code>Unique Received From Addresses</code></td>
+      <td><strong>0.91980</strong></td>
+      <td>High victim count fan-in funneling into single collection addresses.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><code>ERC20 total Ether received</code></td>
+      <td><strong>0.57137</strong></td>
+      <td>Volume spikes during smart contract exploit execution.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><code>ERC20 max val rec</code></td>
+      <td><strong>0.53132</strong></td>
+      <td>Single large asset drain events during credential compromises.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ================= EXECUTABLE PROJECT GUIDE ================= -->
+<div class="page-break"></div>
+
+<h2>8. Executable Project Guide & Operations Manual</h2>
+
+<p>
+  This guide provides the exact terminal commands required to install, configure, validate, and execute the entire platform locally or in production.
+</p>
+
+<h3>8.1 Prerequisites</h3>
+<ul>
+  <li><strong>Node.js:</strong> LTS v20.0.0 or higher</li>
+  <li><strong>Python:</strong> v3.12 or v3.13 (with <code>pip</code>)</li>
+  <li><strong>MongoDB:</strong> MongoDB Atlas cloud URI or local MongoDB instance (v6.0+)</li>
+</ul>
+
+<h3>8.2 Step-by-Step Installation &amp; Environment Setup</h3>
+
+<pre><code># 1. Clone repository & install all workspace dependencies
+git clone https://github.com/Lostindreams56/blockchain-project-1.git
+cd "blockchain-project-1"
+npm run install:all
+
+# 2. Configure Backend Environment (server/.env)
+NODE_ENV=development
+PORT=5000
+CLIENT_URL=http://localhost:5173
+MONGODB_URI=mongodb+srv://&lt;username&gt;:&lt;password&gt;@fraud-detection1.kcyu3vu.mongodb.net/ethereum_fraud_dev?retryWrites=true&amp;w=majority
+MONGODB_DB_NAME=ethereum_fraud_dev
+ETHEREUM_DATASET_COLLECTION=ethereum_dataset
+INVESTIGATIONS_COLLECTION=investigations
+JWT_ACCESS_SECRET=super_secret_access_key_min_32_characters_long
+JWT_REFRESH_SECRET=super_secret_refresh_key_min_32_characters_long
+
+# 3. Configure Frontend Environment (client/.env.production)
+VITE_API_BASE_URL=https://ethereum-fraud-backend.onrender.com/api/v1</code></pre>
+
+<h3>8.3 Execution Commands</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 30%;">Command</th>
+      <th style="width: 25%;">Scope</th>
+      <th>Operational Behavior</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>npm run dev</code></td>
+      <td>Monorepo Full-Stack</td>
+      <td>Runs Express Backend on <code>:5000</code> and Vite Client on <code>:5173</code> concurrently.</td>
+    </tr>
+    <tr>
+      <td><code>npm run dev:server</code></td>
+      <td>Backend Only</td>
+      <td>Starts Express server with TSX hot-reloading.</td>
+    </tr>
+    <tr>
+      <td><code>npm run dev:client</code></td>
+      <td>Frontend Only</td>
+      <td>Starts Vite dev server with React fast-refresh.</td>
+    </tr>
+    <tr>
+      <td><code>npm run build</code></td>
+      <td>Production Builds</td>
+      <td>Compiles TypeScript server to <code>server/dist</code> and client to <code>client/dist</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>8.4 Dedicated Data Pipeline &amp; Maintenance Commands</h3>
+
+<pre><code># Inspect MongoDB Atlas database and collection inventories (Safe, Read-Only)
+npm run db:inspect
+
+# Dry-run validation of Kaggle CSV dataset without writing to database
+npm run dataset:import -- --file="ml-service/data/raw/transaction_dataset.csv" --dry-run
+
+# Ingest validated Kaggle dataset into isolated 'ethereum_dataset' collection
+npm run dataset:import -- --file="ml-service/data/raw/transaction_dataset.csv"
+
+# Target safe cleanup of unrelated sample database (Dry-run mode)
+npm run db:clean -- --target-db=sample_mflix
+
+# Execute confirmed removal of sample_mflix (Protected DBs cannot be dropped)
+npm run db:clean -- --target-db=sample_mflix --confirm</code></pre>
+
+<h3>8.5 Production Cloud Deployment Links</h3>
+<ul>
+  <li><strong>Frontend Vercel Application:</strong> <a href="https://blockchain-project-1-kxi6-e6bloy6as-block-chain1.vercel.app">https://blockchain-project-1-kxi6-e6bloy6as-block-chain1.vercel.app</a></li>
+  <li><strong>Backend Render API Service:</strong> <a href="https://ethereum-fraud-backend.onrender.com">https://ethereum-fraud-backend.onrender.com</a></li>
+  <li><strong>GitHub Main Source Repository:</strong> <a href="https://github.com/Lostindreams56/blockchain-project-1">https://github.com/Lostindreams56/blockchain-project-1</a></li>
+</ul>
+
+<!-- ================= VALIDATION & TEST EVIDENCE ================= -->
+<div class="page-break"></div>
+
+<h2>9. Validation, Testing Evidence & Quality Assurance</h2>
+
+<p>
+  Every tier of the platform is validated by comprehensive automated test suites.
+</p>
+
+<h3>9.1 Backend Integration Test Evidence (Vitest: 24 Passed, 0 Failed)</h3>
+
+<pre><code>> ethereum-fraud-detection-server@1.0.0 test
+> vitest run
+
+ RUN  v3.2.7 E:/fraud detection system/server
+
+ ✓ tests/ready.test.ts (1 test) 124ms
+   ✓ Readiness API > should return 200 and ready state when database connects
+ ✓ tests/health.test.ts (3 tests) 155ms
+   ✓ Health API > should return 200 OK with service health details
+   ✓ Health API > should include security headers from Helmet
+   ✓ Health API > should return 404 for nonexistent route
+ ✓ tests/safety.test.ts (6 tests) 1035ms
+   ✓ 1. Application initialization must NOT auto-seed or insert any records into MongoDB
+   ✓ 2. MongoDB must never contain movie or entertainment collections
+   ✓ 3. Dataset records, investigations, and auth records must remain strictly isolated
+   ✓ 4. Dataset schema validator rejects CSV missing required target column (FLAG)
+   ✓ 5. Safe cleanup utility forbids dropping protected databases
+   ✓ 6. Both /api/v1/auth/register and fallback /auth/register are accepted without 404
+ ✓ tests/auth.test.ts (14 tests) 7635ms
+   ✓ Authentication API > POST /register > successfully registers user and sets HttpOnly cookie
+   ✓ Authentication API > POST /register > securely hashes passwords (never plaintext)
+   ✓ Authentication API > POST /register > rejects duplicate email registration with 409
+   ✓ Authentication API > POST /login > authenticates with valid credentials
+   ✓ Authentication API > POST /login > rejects wrong password using generic timing-safe message
+   ✓ Authentication API > POST /login > rejects nonexistent email
+   ✓ Authentication API > GET /auth/me > rejects access without Bearer token (401)
+   ✓ Authentication API > GET /auth/me > allows access with valid access token
+   ✓ Authentication API > GET /auth/me > rejects expired token
+   ✓ Authentication API > GET /auth/me > rejects forged/tampered token
+   ✓ Authentication API > Session Management > rotates refresh token and issues new access token
+   ✓ Authentication API > Session Management > detects reuse of rotated token and revokes family
+   ✓ Authentication API > Session Management > successfully logs out and clears cookie
+
+ Test Files  4 passed (4)
+      Tests  24 passed (24)
+   Duration  13.17s</code></pre>
+
+<h3>9.2 Machine Learning Microservice Test Evidence (Pytest: 12 Passed, 0 Failed)</h3>
+
+<pre><code>============================= test session starts =============================
+platform win32 -- Python 3.13.13, pytest-9.1.1, pluggy-1.6.0
+rootdir: E:raud detection system
+collected 12 items
+
+ml-service	ests	est_data_loader.py .....                               [ 41%]
+ml-service	ests	est_model_pipeline.py ....                             [ 75%]
+ml-service	ests	est_preprocessor.py ...                                [100%]
+
+============================= 12 passed in 20.88s =============================</code></pre>
+
+<h3>9.3 Frontend Production Build Verification (Vite)</h3>
+
+<pre><code>> ethereum-fraud-detection-client@1.0.0 build
+> tsc -b && vite build
+
+vite v6.4.4 building for production...
+✓ 1734 modules transformed.
+dist/index.html                   1.00 kB │ gzip:   0.59 kB
+dist/assets/index-ckCvkWRx.css   47.36 kB │ gzip:   9.06 kB
+dist/assets/index-B0libnef.js   369.31 kB │ gzip: 113.71 kB
+✓ built in 5.87s with 0 errors</code></pre>
+
+<div class="callout">
+  <div class="callout-title">Conclusion &amp; Operational Readiness</div>
+  The Ethereum Fraud Detection &amp; Risk Intelligence Platform successfully integrates nostalgic retro computing ergonomics with enterprise-grade distributed microservices and supervised machine learning intelligence. All tests pass, data isolation is guaranteed, and cloud endpoints are active and verified.
+</div>
+
+</body>
+</html>

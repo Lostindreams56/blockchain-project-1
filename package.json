@@ -18,7 +18,8 @@
     "install:all": "npm --prefix server install && npm --prefix client install",
     "dataset:import": "npm --prefix server run dataset:import --",
     "db:inspect": "npm --prefix server run db:inspect --",
-    "db:clean": "npm --prefix server run db:clean --"
+    "db:clean": "npm --prefix server run db:clean --",
+    "docs:pdf": "python scripts/generate_documentation_pdf.py"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
